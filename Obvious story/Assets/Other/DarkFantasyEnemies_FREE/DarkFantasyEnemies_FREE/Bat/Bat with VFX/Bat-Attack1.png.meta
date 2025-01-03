@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -121,7 +121,175 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Bat-Attack1_0
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 24
+        width: 34
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf4241e2bb56f2d47b8cbd223bf29a4c
+      internalID: 346946324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Attack1_1
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 29
+        width: 31
+        height: 17
+      alignment: 9
+      pivot: {x: 0.4874216, y: 0.42736682}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7435794122d5ff843b1cfdcf5aa8239e
+      internalID: 1826308731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Attack1_2
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 33
+        width: 17
+        height: 17
+      alignment: 9
+      pivot: {x: 0.49064636, y: 0.43920314}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a4783a96c8181245916e9a829da3f29
+      internalID: 44537195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Attack1_3
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 37
+        width: 16
+        height: 18
+      alignment: 9
+      pivot: {x: 0.5397043, y: 0.35588604}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa9ece85972bf894da975295aedfe892
+      internalID: -1141603431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Attack1_4
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 22
+        width: 15
+        height: 20
+      alignment: 9
+      pivot: {x: 0.51253664, y: 0.44984645}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26a3983e80a66d345835195cf96a2ef7
+      internalID: 49327260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Attack1_6
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 10
+        width: 31
+        height: 24
+      alignment: 9
+      pivot: {x: 0.6936301, y: 0.3024536}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 650fb0a50b81820409b0614fde6365e8
+      internalID: 711162403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Attack1_7
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 10
+        width: 17
+        height: 18
+      alignment: 9
+      pivot: {x: 0.44187477, y: 0.35099295}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f88849bab04d4bc4bb3b98407421171f
+      internalID: -2028957264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Attack1_8
+      rect:
+        serializedVersion: 2
+        x: 469
+        y: 17
+        width: 26
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5118561, y: 0.44219983}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9df88377039e274d9cbacdb907b2940
+      internalID: -328265674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -132,7 +300,16 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Bat-Attack1_0: 346946324
+      Bat-Attack1_1: 1826308731
+      Bat-Attack1_2: 44537195
+      Bat-Attack1_3: -1141603431
+      Bat-Attack1_4: 49327260
+      Bat-Attack1_5: 1370218339
+      Bat-Attack1_6: 711162403
+      Bat-Attack1_7: -2028957264
+      Bat-Attack1_8: -328265674
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

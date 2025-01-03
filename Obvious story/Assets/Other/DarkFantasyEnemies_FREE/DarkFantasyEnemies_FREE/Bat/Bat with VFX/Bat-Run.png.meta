@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -121,7 +121,175 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Bat-Run_0
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 27
+        width: 34
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 822239530c200c648853ecbeadc91ab2
+      internalID: 1230056954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Run_1
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 22
+        width: 16
+        height: 18
+      alignment: 9
+      pivot: {x: 0.53366375, y: 0.26435915}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7e05abeba1383640ad05b64c66eb116
+      internalID: 365649166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Run_2
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 18
+        width: 13
+        height: 20
+      alignment: 9
+      pivot: {x: 0.5362537, y: 0.22059718}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3cb60cf49d7ba0c47879b7bc52d865eb
+      internalID: -291304696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Run_3
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 16
+        width: 15
+        height: 19
+      alignment: 9
+      pivot: {x: 0.57181495, y: 0.2555004}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a2883887675c0b4d9ee7ee04ace4221
+      internalID: -1357924163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Run_4
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 21
+        width: 33
+        height: 12
+      alignment: 9
+      pivot: {x: 0.53060263, y: 0.38779005}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: afad678f611e112448863e8e16a4eda8
+      internalID: -1889792271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Run_5
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 23
+        width: 16
+        height: 17
+      alignment: 9
+      pivot: {x: 0.55891037, y: 0.55940515}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0bde3d1b7f5998a46b178894a5811c53
+      internalID: 1986989139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Run_6
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 24
+        width: 10
+        height: 21
+      alignment: 9
+      pivot: {x: 0.47307128, y: 0.61220986}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d50df4d546dd3140ab956c315be5c8a
+      internalID: -1802487006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Run_7
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 29
+        width: 19
+        height: 15
+      alignment: 9
+      pivot: {x: 0.5212627, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b17317f1841eaee49815b70bacfe9084
+      internalID: -1279954192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -132,7 +300,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Bat-Run_0: 1230056954
+      Bat-Run_1: 365649166
+      Bat-Run_2: -291304696
+      Bat-Run_3: -1357924163
+      Bat-Run_4: -1889792271
+      Bat-Run_5: 1986989139
+      Bat-Run_6: -1802487006
+      Bat-Run_7: -1279954192
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

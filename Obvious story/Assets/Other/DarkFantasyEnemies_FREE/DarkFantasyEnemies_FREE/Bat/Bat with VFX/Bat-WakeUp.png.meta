@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -121,7 +121,343 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Bat-WakeUp_0
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 26
+        width: 10
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0603650457bf08468157d1d7d95b037
+      internalID: 223748996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-WakeUp_1
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 26
+        width: 10
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09204a795fabdeb44a33134e7d63f820
+      internalID: 1362528982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-WakeUp_2
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 26
+        width: 10
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb6aa3569a3aeab46b4559a3c3460ba2
+      internalID: 1780292695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-WakeUp_3
+      rect:
+        serializedVersion: 2
+        x: 219
+        y: 28
+        width: 10
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fce563d34e58bc24da53e7d696f8f062
+      internalID: 894801655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-WakeUp_4
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 28
+        width: 16
+        height: 19
+      alignment: 9
+      pivot: {x: 0.46487236, y: 0.4788714}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f24eb1a890f509944a955cfa4ed2f431
+      internalID: -1791706774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-WakeUp_5
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 30
+        width: 27
+        height: 13
+      alignment: 9
+      pivot: {x: 0.35428986, y: 0.26531044}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a16426a2493c225409613df146b92510
+      internalID: 1550541922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-WakeUp_6
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 21
+        width: 32
+        height: 18
+      alignment: 9
+      pivot: {x: 0.47992706, y: 0.37956703}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb00255962c264740af2ccbb1884ce2c
+      internalID: 1807998944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-WakeUp_7
+      rect:
+        serializedVersion: 2
+        x: 469
+        y: 18
+        width: 21
+        height: 18
+      alignment: 9
+      pivot: {x: 0.53058445, y: 0.3438834}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e54da51a5ce3f89409f15b2c64c2283f
+      internalID: 865631501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-WakeUp_8
+      rect:
+        serializedVersion: 2
+        x: 536
+        y: 11
+        width: 16
+        height: 20
+      alignment: 9
+      pivot: {x: 0.5301056, y: 0.32336512}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77ae591fff3192b4a9540ec7726183e4
+      internalID: 1427102273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-WakeUp_9
+      rect:
+        serializedVersion: 2
+        x: 602
+        y: 9
+        width: 12
+        height: 22
+      alignment: 9
+      pivot: {x: 0.52675885, y: 0.2883301}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1f13e4b4253c6344bc56251d060f50f
+      internalID: 1259201377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-WakeUp_10
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 18
+        width: 33
+        height: 16
+      alignment: 9
+      pivot: {x: 0.54135966, y: 0.44480133}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3fc264681ab4db4499972d777c6b519f
+      internalID: -323413636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-WakeUp_11
+      rect:
+        serializedVersion: 2
+        x: 792
+        y: 23
+        width: 16
+        height: 17
+      alignment: 9
+      pivot: {x: 0.52405167, y: 0.4805982}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff4a1b705fb2bd240a9a3233c65d74ee
+      internalID: -1249400326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-WakeUp_12
+      rect:
+        serializedVersion: 2
+        x: 858
+        y: 22
+        width: 12
+        height: 22
+      alignment: 9
+      pivot: {x: 0.5140279, y: 0.54591197}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf0cb35bd1d719949b0d9a89fa8c991e
+      internalID: 2054274555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-WakeUp_13
+      rect:
+        serializedVersion: 2
+        x: 923
+        y: 24
+        width: 10
+        height: 22
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5497381}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8cb518d6e0b45514ab63c9e66848c30a
+      internalID: -446004030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-WakeUp_14
+      rect:
+        serializedVersion: 2
+        x: 982
+        y: 29
+        width: 19
+        height: 16
+      alignment: 9
+      pivot: {x: 0.55312306, y: 0.38710046}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59eb140d020a09c4c8adfd917e7c13cd
+      internalID: -927931686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-WakeUp_15
+      rect:
+        serializedVersion: 2
+        x: 663
+        y: 8
+        width: 18
+        height: 21
+      alignment: 9
+      pivot: {x: 0.5401408, y: 0.30119023}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35ee39ee8fcaed34c8cdc3ea15097238
+      internalID: -1472030958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -132,7 +468,23 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Bat-WakeUp_0: 223748996
+      Bat-WakeUp_1: 1362528982
+      Bat-WakeUp_10: -323413636
+      Bat-WakeUp_11: -1249400326
+      Bat-WakeUp_12: 2054274555
+      Bat-WakeUp_13: -446004030
+      Bat-WakeUp_14: -927931686
+      Bat-WakeUp_15: -1472030958
+      Bat-WakeUp_2: 1780292695
+      Bat-WakeUp_3: 894801655
+      Bat-WakeUp_4: -1791706774
+      Bat-WakeUp_5: 1550541922
+      Bat-WakeUp_6: 1807998944
+      Bat-WakeUp_7: 865631501
+      Bat-WakeUp_8: 1427102273
+      Bat-WakeUp_9: 1259201377
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
