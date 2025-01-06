@@ -26,8 +26,4 @@ public class MobileInput : IUserInput
     {
         return _joystick.Horizontal * speed;
     }
-    public float GetPlayerMovingVerticalInput(float speed)
-    {
-        return _joystick.Vertical * speed;
-    }
 }

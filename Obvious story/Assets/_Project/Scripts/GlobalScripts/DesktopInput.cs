@@ -22,8 +22,4 @@ public class DesktopInput : MonoBehaviour, IUserInput
     {
         return Input.GetAxis("Horizontal") * speed;
     }
-    public float GetPlayerMovingVerticalInput(float speed)
-    {
-        return Input.GetAxis("Vertical") * speed;
-    }
 }

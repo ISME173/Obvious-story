@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
-    [SerializeField] private float _stateVerticalForPlayerJump = 0.5f;
+    [SerializeField] private float _stateVerticalForPlayerJump = 0.7f;
 
     public event Action PlayerJumpVerticalState;
 
@@ -61,7 +61,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     }
     private void Update()
     {
-        if (Vertical > _stateVerticalForPlayerJump)
+        if (Vertical > 0.5f)
             PlayerJumpVerticalState?.Invoke();
     }
 

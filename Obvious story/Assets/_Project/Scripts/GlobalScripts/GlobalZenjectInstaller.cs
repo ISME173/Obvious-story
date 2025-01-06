@@ -7,9 +7,12 @@ public class GlobalZenjectInstaller : MonoInstaller
     [Header("Mobile input")]
     [SerializeField] private Joystick _playerJoystick;
     [SerializeField] private Button _playerAttackButton;
-    [Space]
+
     [Header("Desktop input")]
     [SerializeField] private DesktopInput _desktopInput;
+
+    [Header("Other")]
+    [SerializeField] private PlayerMoving _playerMoving;
 
     public override void InstallBindings()
     {
@@ -23,6 +26,8 @@ public class GlobalZenjectInstaller : MonoInstaller
                 StateOffInDecktopInput();
                 break;
         }
+
+        Container.Bind<PlayerMoving>().FromInstance(_playerMoving);
     }
     private void StateOffInDecktopInput()
     {
