@@ -10,9 +10,9 @@ public class PlayerAttack : MonoBehaviour
 
     private void Start()
     {
-        _userInput.OnPlayerAttackButtonDown += ((() =>
+        _userInput.OnPlayerAttackButtonDown += () =>
         {
             PlayerAttackButtonDown?.Invoke();
-        }));
+        };
     }
 }

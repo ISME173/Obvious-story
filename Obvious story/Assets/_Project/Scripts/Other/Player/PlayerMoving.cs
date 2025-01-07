@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using Zenject;
 
@@ -8,55 +7,53 @@ public class PlayerMoving : MonoBehaviour
 {
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _speed;
-    [SerializeField] private float _timeToJump;
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
     [Inject] private IUserInput _userInput;
     private Rigidbody2D _rigidbody2d;
-    private PlayerIsGroundTrigger _isGroundTrigger;
-    private PlayerAnimatorStates _playerAnimatorStates;
+    private PlayerIsGroundTrigger _playerIsGroundTrigger;
 
-    private Coroutine _jump;
-
-    public event Action PlayerJumpStart;
+    public event Action JumpActivate;
+    public event Action OnPlayerFall;
 
     public float Speed => _speed;
-    public bool IsJump { get; private set; } = false;
+    public Vector2 MovingVelosity { get; private set; }
 
     private void Awake()
     {
         _rigidbody2d = GetComponent<Rigidbody2D>();
-        _isGroundTrigger = GetComponentInChildren<PlayerIsGroundTrigger>();
-        _playerAnimatorStates = GetComponent<PlayerAnimatorStates>();
+        _playerIsGroundTrigger = GetComponentInChildren<PlayerIsGroundTrigger>();
 
-        _userInput.OnPlayerJumpButtonDown += JumpActivate;
-        _playerAnimatorStates.PlayerJumpEnd += (() =>
+        _userInput.OnPlayerJumpButtonDown += Jump;
+        _playerIsGroundTrigger.OnGroundEnter += () =>
         {
-            if (_jump != null)
-                StopCoroutine(_jump);
-            IsJump = false;
-        });
+            CheckIsFallState();
+        };
+        
     }
 
     private void FixedUpdate()
     {
-        _rigidbody2d.velocity = new Vector2(_userInput.GetPlayerMovingHorizontalInput(Speed), _rigidbody2d.velocity.y);
+        MovingVelosity = new Vector2(_userInput.GetPlayerMovingHorizontalInput(Speed), _rigidbody2d.velocity.y);
+        _rigidbody2d.velocity = MovingVelosity;
 
         if (_rigidbody2d.velocity.x != 0)
             _spriteRenderer.flipX = _rigidbody2d.velocity.x < 0 ? true : false;
     }
-    private void JumpActivate()
+    private void CheckIsFallState()
     {
-        if (_isGroundTrigger.IsGround && IsJump == false)
+        while (_rigidbody2d.velocity.y >= 0)
+            continue;
+
+        OnPlayerFall?.Invoke();
+    }
+    private void Jump()
+    {
+        if (_playerIsGroundTrigger.IsGround)
         {
-            IsJump = true;
-            PlayerJumpStart?.Invoke();
-            _jump = StartCoroutine(Jump(_timeToJump));
+            JumpActivate?.Invoke();
+            _rigidbody2d.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
         }
     }
-    private IEnumerator Jump(float timeToJump)
-    {
-        yield return new WaitForSeconds(timeToJump);
-        _rigidbody2d.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
-    }
+    private void OnDisable() => _userInput.OnPlayerJumpButtonDown -= Jump;
 }

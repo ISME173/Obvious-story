@@ -20,6 +20,7 @@ public class GlobalZenjectInstaller : MonoInstaller
         {
             case DeviceType.Handheld:
                 Container.BindInterfacesAndSelfTo<MobileInput>().FromInstance(new MobileInput(_playerJoystick, _playerAttackButton));
+                StateOnInMobileInput();
                 break;
             case DeviceType.Desktop:
                 Container.BindInterfacesAndSelfTo<DesktopInput>().FromInstance(_desktopInput);
@@ -33,5 +34,10 @@ public class GlobalZenjectInstaller : MonoInstaller
     {
         _playerJoystick.gameObject.SetActive(false);
         _playerAttackButton.gameObject.SetActive(false);
+    }
+    private void StateOnInMobileInput()
+    {
+        _playerJoystick.gameObject.SetActive(true);
+        _playerAttackButton?.gameObject.SetActive(true);
     }
 }
