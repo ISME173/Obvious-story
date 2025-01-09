@@ -1,10 +1,14 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
 public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     [SerializeField] private float _stateVerticalForPlayerJump = 0.7f;
+    private bool _isCanJump = false;
+    private PlayerIsGroundTrigger _isGroundTrigger;
+    [Inject] private PlayerMoving _playerMoving;
 
     public event Action PlayerJumpVerticalState;
 
@@ -42,6 +46,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     private Camera cam;
 
     private Vector2 input = Vector2.zero;
+    private void Awake() => _isGroundTrigger = FindAnyObjectByType<PlayerIsGroundTrigger>();
 
     protected virtual void Start()
     {
@@ -58,11 +63,19 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         handle.anchorMax = center;
         handle.pivot = center;
         handle.anchoredPosition = Vector2.zero;
+
+        _isGroundTrigger.OnGroundEnter += () =>
+        {
+            _isCanJump = true;
+        };
     }
     private void Update()
     {
-        if (Vertical > 0.5f)
+        if ((Vertical > 0.5f && _isCanJump == true) && _playerMoving.TargetVelosity.y == 0)
+        {
+            _isCanJump = false;
             PlayerJumpVerticalState?.Invoke();
+        }
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)

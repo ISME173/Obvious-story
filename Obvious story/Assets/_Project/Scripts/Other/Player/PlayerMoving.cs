@@ -14,10 +14,9 @@ public class PlayerMoving : MonoBehaviour
     private PlayerIsGroundTrigger _playerIsGroundTrigger;
 
     public event Action JumpActivate;
-    public event Action OnPlayerFall;
 
-    public float Speed => _speed;
-    public Vector2 MovingVelosity { get; private set; }
+    public Vector2 TargetVelosity { get; private set; }
+    public Rigidbody2D Rigidbody2D => _rigidbody2d;
 
     private void Awake()
     {
@@ -25,34 +24,23 @@ public class PlayerMoving : MonoBehaviour
         _playerIsGroundTrigger = GetComponentInChildren<PlayerIsGroundTrigger>();
 
         _userInput.OnPlayerJumpButtonDown += Jump;
-        _playerIsGroundTrigger.OnGroundEnter += () =>
-        {
-            CheckIsFallState();
-        };
-        
     }
 
     private void FixedUpdate()
     {
-        MovingVelosity = new Vector2(_userInput.GetPlayerMovingHorizontalInput(Speed), _rigidbody2d.velocity.y);
-        _rigidbody2d.velocity = MovingVelosity;
+        TargetVelosity = new Vector2(_userInput.GetPlayerMovingHorizontalInput(_speed), _rigidbody2d.velocity.y);
+        _rigidbody2d.velocity = TargetVelosity;
 
         if (_rigidbody2d.velocity.x != 0)
             _spriteRenderer.flipX = _rigidbody2d.velocity.x < 0 ? true : false;
-    }
-    private void CheckIsFallState()
-    {
-        while (_rigidbody2d.velocity.y >= 0)
-            continue;
-
-        OnPlayerFall?.Invoke();
     }
     private void Jump()
     {
         if (_playerIsGroundTrigger.IsGround)
         {
             JumpActivate?.Invoke();
-            _rigidbody2d.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+            //_rigidbody2d.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+            _rigidbody2d.velocity = Vector2.up * _jumpForce;
         }
     }
     private void OnDisable() => _userInput.OnPlayerJumpButtonDown -= Jump;
