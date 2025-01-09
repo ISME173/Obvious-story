@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 using UnityEngine.UI;
 
 public class MobileInput : IUserInput
@@ -9,11 +8,10 @@ public class MobileInput : IUserInput
     public MobileInput(Joystick joystick, Button playerAttackButton)
     {
         _joystick = joystick;
-        joystick.PlayerJumpVerticalState += (() => 
+        joystick.PlayerJumpVerticalState += () => 
         {
             OnPlayerJumpButtonDown?.Invoke();
-            Debug.Log("Invoke");
-        });
+        };
 
         playerAttackButton.onClick.AddListener((() => 
         {

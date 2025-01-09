@@ -7,7 +7,7 @@ public class PlayerIsGroundTrigger : MonoBehaviour
 
     public event Action OnGroundEnter, OnGroundExit;
 
-    public bool IsGround { get; private set; }
+    public bool IsGround { get; private set; } = true;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
