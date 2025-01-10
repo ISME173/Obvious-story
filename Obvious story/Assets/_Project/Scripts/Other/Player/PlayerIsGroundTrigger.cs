@@ -5,7 +5,7 @@ public class PlayerIsGroundTrigger : MonoBehaviour
 {
     [SerializeField] private string _sortingTriggersToLayer;
 
-    public event Action OnGroundEnter, OnGroundExit;
+    public event Action OnGroundEnter, OnGroundExit, OnGroundStay;
 
     public bool IsGround { get; private set; } = true;
 
@@ -23,6 +23,13 @@ public class PlayerIsGroundTrigger : MonoBehaviour
         {
             IsGround = false;
             OnGroundExit?.Invoke();
+        }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer(_sortingTriggersToLayer))
+        {
+            OnGroundStay?.Invoke();
         }
     }
 }

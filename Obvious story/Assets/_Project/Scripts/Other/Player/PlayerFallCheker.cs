@@ -9,13 +9,19 @@ public class PlayerFallCheker : MonoBehaviour
 
     [Inject] private PlayerMoving _playerMoving;
     private Coroutine _playerInAirCoroutine;
+    private Animator _animator;
 
-    public event Action OnPlayerFall;
+    public event Action<bool> OnPlayerFall;
 
     private void Awake()
     {
         if (_playerIsGroundTrigger == null)
             _playerIsGroundTrigger = FindAnyObjectByType<PlayerIsGroundTrigger>();
+
+        if (TryGetComponent(out Animator animator))
+            _animator = animator;
+        else
+            _animator = FindAnyObjectByType<Animator>();
     }
 
     private void Start()
@@ -28,8 +34,22 @@ public class PlayerFallCheker : MonoBehaviour
         _playerIsGroundTrigger.OnGroundEnter += () =>
         {
             if (_playerInAirCoroutine != null)
+            {
                 StopCoroutine(_playerInAirCoroutine);
-            _playerInAirCoroutine = null;
+                _playerInAirCoroutine = null;
+            }
+            if (_animator.GetCurrentAnimatorStateInfo(0).IsName("MainPlayerJump"))
+            {
+                OnPlayerFall?.Invoke(false);
+            }
+        };
+
+        _playerIsGroundTrigger.OnGroundStay += () =>
+        {
+            if (_animator.GetCurrentAnimatorStateInfo(0).IsName("MainPlayerJump"))
+            {
+                OnPlayerFall?.Invoke(false);
+            }
         };
     }
     private IEnumerator CheckIsFall()
@@ -41,11 +61,7 @@ public class PlayerFallCheker : MonoBehaviour
                 yield return null;
                 continue;
             }
-            OnPlayerFall?.Invoke();
-        }
-        else
-        {
-            OnPlayerFall?.Invoke();
+            OnPlayerFall?.Invoke(true);
         }
     }
 }

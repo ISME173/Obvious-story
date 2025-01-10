@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -126,10 +126,10 @@ TextureImporter:
       name: Bat-Attack2_0
       rect:
         serializedVersion: 2
-        x: 15
-        y: 24
-        width: 34
-        height: 16
+        x: 0
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -147,10 +147,10 @@ TextureImporter:
       name: Bat-Attack2_1
       rect:
         serializedVersion: 2
-        x: 91
-        y: 25
-        width: 22
-        height: 17
+        x: 64
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -168,10 +168,10 @@ TextureImporter:
       name: Bat-Attack2_2
       rect:
         serializedVersion: 2
-        x: 160
-        y: 26
-        width: 26
-        height: 19
+        x: 128
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -189,10 +189,10 @@ TextureImporter:
       name: Bat-Attack2_3
       rect:
         serializedVersion: 2
-        x: 226
-        y: 27
-        width: 26
-        height: 19
+        x: 192
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -210,12 +210,12 @@ TextureImporter:
       name: Bat-Attack2_4
       rect:
         serializedVersion: 2
-        x: 283
-        y: 30
-        width: 23
-        height: 16
-      alignment: 9
-      pivot: {x: 0.337336, y: 0.24571228}
+        x: 256
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -231,12 +231,12 @@ TextureImporter:
       name: Bat-Attack2_5
       rect:
         serializedVersion: 2
-        x: 339
-        y: 30
-        width: 22
-        height: 18
-      alignment: 9
-      pivot: {x: 0.36862323, y: 0.40782037}
+        x: 320
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -252,12 +252,12 @@ TextureImporter:
       name: Bat-Attack2_6
       rect:
         serializedVersion: 2
-        x: 399
-        y: 29
-        width: 17
-        height: 19
-      alignment: 9
-      pivot: {x: 0.5122322, y: 0.4206609}
+        x: 384
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -273,12 +273,12 @@ TextureImporter:
       name: Bat-Attack2_7
       rect:
         serializedVersion: 2
-        x: 453
-        y: 30
-        width: 23
-        height: 8
-      alignment: 9
-      pivot: {x: 0.49999866, y: 0.40929747}
+        x: 448
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -294,10 +294,10 @@ TextureImporter:
       name: Bat-Attack2_8
       rect:
         serializedVersion: 2
-        x: 515
-        y: 28
-        width: 21
-        height: 10
+        x: 512
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -315,10 +315,10 @@ TextureImporter:
       name: Bat-Attack2_9
       rect:
         serializedVersion: 2
-        x: 578
-        y: 28
-        width: 21
-        height: 10
+        x: 576
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -336,10 +336,10 @@ TextureImporter:
       name: Bat-Attack2_10
       rect:
         serializedVersion: 2
-        x: 649
-        y: 23
-        width: 27
-        height: 17
+        x: 640
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

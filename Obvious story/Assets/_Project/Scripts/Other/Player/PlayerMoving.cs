@@ -39,7 +39,6 @@ public class PlayerMoving : MonoBehaviour
         if (_playerIsGroundTrigger.IsGround)
         {
             JumpActivate?.Invoke();
-            //_rigidbody2d.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
             _rigidbody2d.velocity = Vector2.up * _jumpForce;
         }
     }

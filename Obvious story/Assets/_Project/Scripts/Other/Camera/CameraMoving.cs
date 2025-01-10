@@ -10,6 +10,13 @@ public class CameraMoving : MonoBehaviour
     [Space]
     [SerializeField] private float _maxPositionX;
     [SerializeField] private float _minPositionX;
+    private void Awake()
+    {
+        if (_follow == null)
+        {
+            _follow = FindAnyObjectByType<PlayerMoving>().transform;
+        }
+    }
 
     private void LateUpdate()
     {

@@ -64,7 +64,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         handle.pivot = center;
         handle.anchoredPosition = Vector2.zero;
 
-        _isGroundTrigger.OnGroundEnter += () =>
+        _isGroundTrigger.OnGroundStay += () =>
         {
             _isCanJump = true;
         };
