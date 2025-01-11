@@ -8,6 +8,7 @@ public class PlayerMoving : MonoBehaviour
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _speed;
     [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private Transform _targetPoint;
 
     [Inject] private IUserInput _userInput;
     private Rigidbody2D _rigidbody2d;
@@ -17,6 +18,7 @@ public class PlayerMoving : MonoBehaviour
 
     public Vector2 TargetVelosity { get; private set; }
     public Rigidbody2D Rigidbody2D => _rigidbody2d;
+    public Transform TargetPoint => _targetPoint;
 
     private void Awake()
     {

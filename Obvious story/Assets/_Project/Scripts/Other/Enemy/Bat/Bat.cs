@@ -6,18 +6,15 @@ public class Bat : Enemy
     [SerializeField] private Transform[] _movingPoints;
 
     private Vector2 _beforePositiion;
-    private int _attackType = 1;
-    private bool _isAttack = false;
  
-    private void Start() => Init();
+    private void Awake() => Init();
 
-    private void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (RaycastToPlayer(AttackDistance) && _isAttack == false)
-        {
-            Attack();
-        }
+        if (collision.TryGetComponent(out PlayerMoving playerMoving)) ;
+            //.Log("PlayerTakeDamage");
     }
+
     protected override void Init()
     {
         base.Init();
@@ -27,18 +24,14 @@ public class Bat : Enemy
         for (int i = 0; i < _movingPoints.Length; i++)
             _movingPoints[i].SetParent(null);
     }
-
-    protected override void Attack()
-    {
-        _isAttack = true;
-        FlipEnemyToTarget(PlayerMoving.transform);
-        _animator.SetTrigger(IsAttack + _attackType);
-        _attackType = Random.Range(1, 3);
-    }
     protected override void Died()
     {
         _animator.SetBool(IsLive, false);
         _animator.SetTrigger(IsDied);
+
+        while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
+            return;
+
         gameObject.SetActive(false);
     }
     public override void Move(Transform point)
@@ -48,5 +41,4 @@ public class Bat : Enemy
         _spriteRenderer.flipX = transform.position.x < _beforePositiion.x ? false : true;
     }
     public Transform[] GetMovingPoints() => _movingPoints;
-    public void AttackEnd() => _isAttack = false;
 }
