@@ -7,7 +7,7 @@ public class DesktopInput : MonoBehaviour, IUserInput
     [SerializeField] private KeyCode _playerAttackKeyCode;
 
     public event Action OnPlayerJumpButtonDown;
-    public event Action OnPlayerAttackButtonDown;
+    public event Action OnPlayerAttackActivate;
 
     private void Update()
     {
@@ -15,7 +15,7 @@ public class DesktopInput : MonoBehaviour, IUserInput
             OnPlayerJumpButtonDown?.Invoke();
 
         if (Input.GetKeyDown(_playerAttackKeyCode))
-            OnPlayerAttackButtonDown?.Invoke();
+            OnPlayerAttackActivate?.Invoke();
     }
 
     public float GetPlayerMovingHorizontalInput(float speed)

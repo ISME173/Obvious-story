@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MainPlayerIdle : StateMachineBehaviour
+public class MainPlayerRun : StateMachineBehaviour
 {
     private PlayerMoving _playerMoving;
     private PlayerAnimatorStates _playerAnimatorStates;
@@ -8,11 +8,11 @@ public class MainPlayerIdle : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         _playerMoving = animator.GetComponent<PlayerMoving>();
-        _playerAnimatorStates = animator.GetComponent<PlayerAnimatorStates>();
+        _playerAnimatorStates = animator.GetComponent<PlayerAnimatorStates>();       
     }
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (_playerMoving.TargetVelosity.x != 0)
-            animator.SetBool(_playerAnimatorStates.Idle, false);
+        if (_playerMoving.TargetVelosity.x == 0)
+            animator.SetBool(_playerAnimatorStates.IsIdle, true);
     }
 }

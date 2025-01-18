@@ -15,12 +15,12 @@ public class MobileInput : IUserInput
 
         playerAttackButton.onClick.AddListener((() => 
         {
-            OnPlayerAttackButtonDown?.Invoke();
+            OnPlayerAttackActivate?.Invoke();
         }));
     }
 
     public event Action OnPlayerJumpButtonDown;
-    public event Action OnPlayerAttackButtonDown;
+    public event Action OnPlayerAttackActivate;
 
     public float GetPlayerMovingHorizontalInput(float speed)
     {

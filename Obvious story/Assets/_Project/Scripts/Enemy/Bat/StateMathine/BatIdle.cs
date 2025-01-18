@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BatIdle : StateMachineBehaviour
+public class BatIsIdle : StateMachineBehaviour
 {
     private Bat _bat;
     private float _time;
@@ -17,10 +17,7 @@ public class BatIdle : StateMachineBehaviour
     {
         if (_bat.RaycastToPlayer(_bat.AngryDistance))
         {
-            if (_bat.RaycastToPlayer(_bat.AttackDistance))
-                animator.SetBool(_bat.IsAttack, true);
-            else
-                animator.SetBool(_bat.IsAngry, true);
+            animator.SetBool(_bat.IsAngry, true);
         }
         else
         {

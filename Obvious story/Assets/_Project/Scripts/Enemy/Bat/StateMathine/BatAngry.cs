@@ -9,7 +9,7 @@ public class BatAngry : StateMachineBehaviour
     {
         _bat = animator.GetComponent<Bat>();
         _targetObject = _bat.PlayerMoving.TargetPoint;
-        _bat.MovingSpeed++;
+        _bat.AngryMovingSpeedActivate();
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -28,6 +28,6 @@ public class BatAngry : StateMachineBehaviour
     }
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        _bat.MovingSpeed--;
+        _bat.NormalMovingSpeedActivate();
     }
 }

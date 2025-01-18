@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6760968147066095848}
   - component: {fileID: 2521981094810013850}
   - component: {fileID: 6426708129019256290}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: AttackTrigger1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 4932974770833285506}
   - component: {fileID: 1603957006973897971}
   - component: {fileID: 6543684695015802282}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: AttackTrigger2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 7119033696723516954}
   - component: {fileID: 6624451479288998149}
   - component: {fileID: 7061664591400717433}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: AttackTrigger3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -527,6 +527,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4bb5538b588084f96072b69af0f166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackTypes:
+  - _animationNumber: 1
+    _animationTime: 0.25
+  - _animationNumber: 2
+    _animationTime: 0.25
+  - _animationNumber: 3
+    _animationTime: 0.25
 --- !u!114 &7681197971995162447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -551,7 +558,7 @@ GameObject:
   - component: {fileID: 2885027882549750971}
   - component: {fileID: 8114109932661389341}
   - component: {fileID: 2972491386366661837}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: IsGroundTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,7 +637,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7778600550324836089}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: AttackTriggers
   m_TagString: Untagged
   m_Icon: {fileID: 0}

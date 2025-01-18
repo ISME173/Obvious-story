@@ -4,18 +4,25 @@ using UnityEngine;
 public class PlayerAnimatorStates : MonoBehaviour
 {
     [SerializeField] private PlayerFallCheker _playerFallCheker;
+    [Space]
 
     private Animator _animator;
     private PlayerMoving _playerMoving;
     private PlayerIsGroundTrigger _playerIsGroundTrigger;
     private PlayerAttack _playerAttack;
+    private PlayerHealthManager _playerHealthManager;
 
-    [field: SerializeField] public string Idle { get; private set; }
+    [field: SerializeField] public string IsIdle { get; private set; }
     [field: SerializeField] public string IsGround { get; private set; }
+    [field: SerializeField] public string IsLive { get; private set; }
     [field: SerializeField] public string JumpTrigger { get; private set; }
     [field: SerializeField] public string FallTrigger { get; private set; }
-    [field: SerializeField] public string IdleTrigger { get; private set; }
-    [field: SerializeField, Tooltip("Write the name of the trigger without the number at the end ")] public string AttackTrigger { get; private set; } = "AttackTrigger";
+    [field: SerializeField] public string IsIdleTrigger { get; private set; }
+    [field: SerializeField] public string TakeDamageTrigger { get; private set; }
+    [field: SerializeField] public string DiedTrigger { get; private set; }
+
+    [field: SerializeField, Tooltip("Write the name of the trigger without the number at the end ")]
+    public string AttackTrigger { get; private set; } = "AttackTrigger";
 
     private void Awake()
     {
@@ -23,11 +30,16 @@ public class PlayerAnimatorStates : MonoBehaviour
         _playerMoving = GetComponent<PlayerMoving>();
         _playerIsGroundTrigger = GetComponentInChildren<PlayerIsGroundTrigger>();
         _playerAttack = GetComponent<PlayerAttack>();
+        _playerHealthManager = GetComponent<PlayerHealthManager>();
 
         if (_playerFallCheker == null)
             _playerFallCheker = FindAnyObjectByType<PlayerFallCheker>();
+
+        _animator.SetBool(IsLive, true);
     }
-    private void Start()
+    private void Start() => AddListeners();
+
+    private void AddListeners()
     {
         _playerMoving.JumpActivate += () =>
         {
@@ -46,12 +58,20 @@ public class PlayerAnimatorStates : MonoBehaviour
             if (isFall)
                 _animator.SetTrigger(FallTrigger);
             else
-                _animator.SetTrigger(IdleTrigger);
+                _animator.SetTrigger(IsIdleTrigger);
         };
-        _playerAttack.PlayerAttackButtonDown += (int currentAttack) =>
+        _playerAttack.PlayerAttackActivate += (int currentAttack) =>
         {
             _animator.SetTrigger(AttackTrigger + currentAttack);
         };
-
+        _playerHealthManager.HeartsCountChanged += (int _) =>
+        {
+            _animator.SetTrigger(TakeDamageTrigger);
+        };
+        _playerHealthManager.PlayerDied += () =>
+        {
+            _animator.SetBool(IsLive, false);
+            _animator.SetTrigger(DiedTrigger);
+        };
     }
 }

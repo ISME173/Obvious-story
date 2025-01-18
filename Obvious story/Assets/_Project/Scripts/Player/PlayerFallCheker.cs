@@ -24,13 +24,16 @@ public class PlayerFallCheker : MonoBehaviour
             _animator = FindAnyObjectByType<Animator>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         _playerIsGroundTrigger.OnGroundExit += () =>
         {
-            _playerInAirCoroutine = StartCoroutine(CheckIsFall());
+            if (gameObject.activeSelf)
+                _playerInAirCoroutine = StartCoroutine(CheckIsFall());
         };
-
+    }
+    private void Start()
+    {
         _playerIsGroundTrigger.OnGroundEnter += () =>
         {
             if (_playerInAirCoroutine != null)
