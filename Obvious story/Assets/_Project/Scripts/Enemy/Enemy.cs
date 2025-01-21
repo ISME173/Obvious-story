@@ -65,15 +65,17 @@ public abstract class Enemy : MonoBehaviour, IDamagable
 
     public virtual void FlipEnemyToTarget(Transform target)
     {
-        //_spriteRenderer.flipX = transform.position.x < target.position.x ? true : false;
         transform.rotation = transform.position.x < target.position.x ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
     }
     public bool RaycastToPlayer(float distance)
     {
-        Vector3 direction = PlayerMoving.TargetPoint.position - _raycastStartTransform.position;
+        if (GameManager.Instance.IsGameStarting == false)
+            return false;
+
+        Vector3 direction = this.PlayerMoving.TargetPoint.position - _raycastStartTransform.position;
         RaycastHit2D hit = Physics2D.Raycast(_raycastStartTransform.transform.position, direction, distance, ~_ignoreLayerMask);
 
-        return hit && hit.collider.TryGetComponent(out PlayerMoving playerMoving);
+        return hit && hit.collider.TryGetComponent(out PlayerMoving PlayerMoving);
     }
     public virtual void TakeDamage(int damage)
     {
@@ -81,7 +83,6 @@ public abstract class Enemy : MonoBehaviour, IDamagable
             return;
 
         _heartsCount -= damage;
-        Debug.Log(_heartsCount);
         _animator.SetTrigger(IsTakeDamage);
 
         if (_heartsCount <= 0)

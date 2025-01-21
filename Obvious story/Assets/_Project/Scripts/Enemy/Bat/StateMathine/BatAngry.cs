@@ -8,7 +8,7 @@ public class BatAngry : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         _bat = animator.GetComponent<Bat>();
-        _targetObject = _bat.PlayerMoving.TargetPoint;
+        _targetObject = _bat.PlayerMoving.transform;
         _bat.AngryMovingSpeedActivate();
     }
 

@@ -5,7 +5,6 @@ using Zenject;
 
 public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
-    [SerializeField] private float _stateVerticalForPlayerJump = 0.7f;
     private bool _isCanJump = false;
     private PlayerIsGroundTrigger _isGroundTrigger;
     [Inject] private PlayerMoving _playerMoving;

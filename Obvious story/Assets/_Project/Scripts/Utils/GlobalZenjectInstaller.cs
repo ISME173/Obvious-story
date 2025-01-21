@@ -13,6 +13,7 @@ public class GlobalZenjectInstaller : MonoInstaller
 
     [Header("Other")]
     [SerializeField] private PlayerMoving _playerMoving;
+    [SerializeField] private PlayerHealthManager _playerHealthManager;
 
     public override void InstallBindings()
     {
@@ -29,6 +30,7 @@ public class GlobalZenjectInstaller : MonoInstaller
         }
 
         Container.Bind<PlayerMoving>().FromInstance(_playerMoving);
+        Container.Bind<PlayerHealthManager>().FromInstance(_playerHealthManager);
     }
     private void StateOffInDecktopInput()
     {

@@ -47,7 +47,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void AttackStart()
     {
-        if (_canAttack)
+        if (_canAttack && GameManager.Instance.IsGameStarting)
         {
             _canAttack = false;
 

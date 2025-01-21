@@ -3,6 +3,7 @@ using UnityEngine;
 using Zenject;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
+[Serializable]
 public class PlayerMoving : MonoBehaviour
 {
     [SerializeField] private float _jumpForce;
@@ -41,7 +42,7 @@ public class PlayerMoving : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_canMoving == false)
+        if (_canMoving == false || GameManager.Instance.IsGameStarting == false)
             return;
 
         TargetVelosity = new Vector2(_userInput.GetPlayerMovingHorizontalInput(_speed), _rigidbody2d.velocity.y);
@@ -55,7 +56,7 @@ public class PlayerMoving : MonoBehaviour
     }
     private void Jump()
     {
-        if (_playerIsGroundTrigger.IsGround)
+        if (_playerIsGroundTrigger.IsGround && GameManager.Instance.IsGameStarting)
         {
             JumpActivate?.Invoke();
             _rigidbody2d.velocity = Vector2.up * _jumpForce;

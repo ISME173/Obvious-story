@@ -64,7 +64,7 @@ public class PlayerAnimatorStates : MonoBehaviour
         {
             _animator.SetTrigger(AttackTrigger + currentAttack);
         };
-        _playerHealthManager.HeartsCountChanged += (int _) =>
+        _playerHealthManager.DamageTaken += (int _) =>
         {
             _animator.SetTrigger(TakeDamageTrigger);
         };
