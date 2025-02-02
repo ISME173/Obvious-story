@@ -14,6 +14,7 @@ public class PlayerMoving : MonoBehaviour
     [Inject] private IUserInput _userInput;
     private Rigidbody2D _rigidbody2d;
     private PlayerIsGroundTrigger _playerIsGroundTrigger;
+    private Collider2D _collider2D;
     private bool _canMoving = true;
 
     public event Action JumpActivate;
@@ -25,25 +26,38 @@ public class PlayerMoving : MonoBehaviour
     private void Awake()
     {
         _rigidbody2d = GetComponent<Rigidbody2D>();
+        _collider2D = GetComponent<Collider2D>();
         _playerIsGroundTrigger = GetComponentInChildren<PlayerIsGroundTrigger>();
-
-        _userInput.OnPlayerJumpButtonDown += Jump;
     }
+
+    private void Start()
+    {
+        GameManager.Instance.OnGameOver.AddListener((() =>
+        {
+            _canMoving = false;
+
+            _playerIsGroundTrigger.OnGroundStay += () =>
+            {
+                _rigidbody2d.isKinematic = true;
+                _rigidbody2d.simulated = false;
+            };
+
+            _collider2D.enabled = false;
+            _userInput.OnPlayerJumpButtonDown -= Jump;
+            _rigidbody2d.velocity = Vector2.zero;
+            _speed = 0;
+        }));
+    }
+
     private void OnEnable()
     {
-        GameManager.Instance.OnGameOver.AddListener(StatesWithGameOver);
+        _userInput.OnPlayerJumpButtonDown += Jump;
     }
     private void OnDisable()
     {
         _userInput.OnPlayerJumpButtonDown -= Jump;
     }
-    private void StatesWithGameOver()
-    {
-        _canMoving = false;
-        _userInput.OnPlayerJumpButtonDown -= Jump;
-        _rigidbody2d.velocity = Vector2.zero;
-        _speed = 0;
-    }
+
     private void FixedUpdate()
     {
         if (_canMoving == false || GameManager.Instance.IsGameStarting == false)

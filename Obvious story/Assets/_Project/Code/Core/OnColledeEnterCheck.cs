@@ -8,7 +8,7 @@ public abstract class OnColledeEnterCheck<T> : MonoBehaviour where T : IDamagabl
 
     public event Action<IDamagable> OnCollideEnter;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out IDamagable damagable))
         {

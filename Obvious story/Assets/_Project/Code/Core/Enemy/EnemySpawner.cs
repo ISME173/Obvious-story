@@ -6,14 +6,10 @@ using Zenject;
 
 public abstract class EnemySpawner<T> : Spawner<Enemy> where T : Enemy
 {
-    [SerializeField] protected List<Transform> _enemySpawnPoints;
-
-    [SerializeField] protected bool _useSpawnPointsHowMoving = true;
-    [HideIf(nameof(_useSpawnPointsHowMoving))]
-    [SerializeField] protected List<Transform> _movingPoints;
- 
+    [SerializeField] protected List<EnemySpawnState> _enemySpawnStates;
     [Space]
     [SerializeField] protected T _enemyPrefab;
+    [SerializeField] protected bool _spawnOnPlay;
 
     [Header("Enemy pool states"), Space]
 
@@ -35,12 +31,6 @@ public abstract class EnemySpawner<T> : Spawner<Enemy> where T : Enemy
 
     [Space]
 
-    [SerializeField] protected bool _spawnOnPlay;
-    [ShowIf(nameof(_spawnOnPlay))]
-    [SerializeField, Min(0)] protected int _spawnCountOnPlay;
-
-    [Space]
-
     [SerializeField] protected bool _usingMaxCountEnemyInPool;
     [ShowIf(nameof(_usingMaxCountEnemyInPool))]
     [SerializeField] protected int _maxEnemyCountInPool;
@@ -49,13 +39,6 @@ public abstract class EnemySpawner<T> : Spawner<Enemy> where T : Enemy
 
     private UnityEvent Disable = new();
 
-    private Transform[] MovingPoints
-    {
-        get
-        {
-            return _useSpawnPointsHowMoving ? _enemySpawnPoints.ToArray() : _movingPoints.ToArray();
-        }
-    }
     private Transform ContainerForEnemyInPool
     {
         get
@@ -75,8 +58,11 @@ public abstract class EnemySpawner<T> : Spawner<Enemy> where T : Enemy
         {
             AllEnemySpawnersManager.Instance.OnSpawn.AddListener((() =>
             {
-                for (int i = 0; i < _spawnCountOnPlay; i++)
-                    Spawn();
+                for (int i = 0; i < _enemySpawnStates.Count; i++)
+                {
+                    for (int j = 0; j < _enemySpawnStates[i].SpawnCount; j++)
+                        Spawn(_enemySpawnStates[i]);
+                }
             }));
         }
     }
@@ -91,7 +77,15 @@ public abstract class EnemySpawner<T> : Spawner<Enemy> where T : Enemy
         _pool = new ObjectPool<Enemy>(ContainerForEnemyInPool, _enemyPrefab);
 
         if (_putEnemyToPoolInStart)
-            InstantiateObjectsToPool(_startPutEnemyToPoolCount);
+        {
+            for (int i = 0; i < _enemySpawnStates.Count; i++)
+            {
+                for (int j = 0; j < _enemySpawnStates[i].SpawnCount; j++)
+                {
+                    InstantiateObjectsToPool(_enemySpawnStates[i]);
+                }
+            }
+        }
     }
 
     protected override void AddListeners(Enemy enemy)
@@ -116,9 +110,29 @@ public abstract class EnemySpawner<T> : Spawner<Enemy> where T : Enemy
     {
         _pool.Put(enemy);
     }
+    protected void InstantiateObjectsToPool(EnemySpawnState enemySpawnState)
+    {
+        for (int i = 0; i < enemySpawnState.SpawnCount; i++)
+        {
+            if (_usingMaxCountEnemyInPool)
+            {
+                if (_pool.CountObjectInPool > _maxEnemyCountInPool)
+                {
+                    while (_pool.CountObjectInPool > _maxEnemyCountInPool)
+                        Destroy(_pool.Get().gameObject);
+                }
+                else if (_pool.CountObjectInPool == _maxEnemyCountInPool)
+                {
+                    return;
+                }
+            }
 
-    [SerializeField, Button("Instantiate enemy to pool")]
-    protected void InstantiateObjectsToPool(int instantiateCount = 1)
+            Enemy enemy = Instantiate(_enemyPrefab);
+            enemy.Init(_playerMoving, enemySpawnState.MovingPoints, true);
+            _pool.Put(enemy);
+        };
+    }
+    protected void InstantiateObjectsToPool(EnemySpawnState enemySpawnState, int instantiateCount)
     {
         for (int i = 0; i < instantiateCount; i++)
         {
@@ -136,24 +150,68 @@ public abstract class EnemySpawner<T> : Spawner<Enemy> where T : Enemy
             }
 
             Enemy enemy = Instantiate(_enemyPrefab);
-            enemy.Init(_playerMoving, _enemySpawnPoints.ToArray(), true);
+            enemy.Init(_playerMoving, enemySpawnState.MovingPoints, true);
+            _pool.Put(enemy);
+        };
+    }
+    [SerializeField, Button("Instantiate enemy with random states to pool")]
+    protected void InstantiateObjectsToPoolWithRandomStates()
+    {
+        EnemySpawnState enemySpawnState = _enemySpawnStates[Random.Range(0, _enemySpawnStates.Count)];
+
+        for (int i = 0; i < enemySpawnState.SpawnCount; i++)
+        {
+            if (_usingMaxCountEnemyInPool)
+            {
+                if (_pool.CountObjectInPool > _maxEnemyCountInPool)
+                {
+                    while (_pool.CountObjectInPool > _maxEnemyCountInPool)
+                        Destroy(_pool.Get().gameObject);
+                }
+                else if (_pool.CountObjectInPool == _maxEnemyCountInPool)
+                {
+                    return;
+                }
+            }
+
+            Enemy enemy = Instantiate(_enemyPrefab);
+            enemy.Init(_playerMoving, enemySpawnState.MovingPoints, true);
             _pool.Put(enemy);
         };
     }
 
-    [Button("Spawn enemy")]
-    public override Enemy Spawn()
+    public Enemy Spawn(EnemySpawnState enemySpawnState)
     {
         if (_pool == null)
             _pool = new ObjectPool<Enemy>(ContainerForEnemyInPool, _enemyPrefab);
 
         if (_pool.CountObjectInPool == 0 && _addEnemyToPoolIfPoolIsEmpty)
-            InstantiateObjectsToPool(_addEnemyToPoolCountIfPoolIsEmpty);
+            InstantiateObjectsToPool(enemySpawnState, _addEnemyToPoolCountIfPoolIsEmpty);
 
         Enemy enemy = _pool.Get(out bool isInstantiated);
         enemy.transform.SetParent(null);
-        enemy.transform.position = _enemySpawnPoints[Random.Range(0, _enemySpawnPoints.Count)].position;
-        enemy.Init(_playerMoving, MovingPoints, isInstantiated);
+        enemy.transform.position = enemySpawnState.SpawnPoints[Random.Range(0, enemySpawnState.SpawnPoints.Length)].position;
+        enemy.Init(_playerMoving, enemySpawnState.MovingPoints, isInstantiated);
+        AddListeners(enemy);
+
+        return enemy;
+    }
+
+    [Button("Spawn an enemy with random spawn parameters")]
+    public override Enemy Spawn()
+    {
+        EnemySpawnState enemySpawnState = _enemySpawnStates[Random.Range(0, _enemySpawnStates.Count)];
+
+        if (_pool == null)
+            _pool = new ObjectPool<Enemy>(ContainerForEnemyInPool, _enemyPrefab);
+
+        if (_pool.CountObjectInPool == 0 && _addEnemyToPoolIfPoolIsEmpty)
+            InstantiateObjectsToPool(enemySpawnState, _addEnemyToPoolCountIfPoolIsEmpty);
+
+        Enemy enemy = _pool.Get(out bool isInstantiated);
+        enemy.transform.SetParent(null);
+        enemy.transform.position = enemySpawnState.SpawnPoints[Random.Range(0, enemySpawnState.SpawnPoints.Length)].position;
+        //enemy.Init(_playerMoving, enemySpawnState.MovingPoints, isInstantiated);
         AddListeners(enemy);
 
         return enemy;

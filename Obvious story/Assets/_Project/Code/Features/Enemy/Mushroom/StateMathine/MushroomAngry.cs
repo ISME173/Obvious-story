@@ -7,7 +7,6 @@ public class MushroomAngry : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Debug.Log(animator.gameObject.name);
         _mushroom = animator.GetComponent<Mushroom>();
         _targetObject = _mushroom.GetPlayerTargetPoint();
         _mushroom.AngryMovingSpeedActivate();

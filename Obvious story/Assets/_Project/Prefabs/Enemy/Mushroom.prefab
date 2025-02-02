@@ -220,11 +220,19 @@ MonoBehaviour:
   _attackVariantsCount: 1
   _angryMovingSpeed: 2.5
   _normalMovingSpeed: 2
+  _usingVariationForStates: 1
+  _variationForStates: 1
   _raycastStartTransform: {fileID: 493622330650002437}
   _ignoreLayerMaskForRaycast:
     serializedVersion: 2
     m_Bits: 132
-  _canGoThroughAPlayer: 1
+  _canGoThroughAPlayerAndEnemy: 1
+  _canTakeDamageAnyEnemy: 0
+  <AngryDistance>k__BackingField: 6
+  <AttackDistance>k__BackingField: 1
+  <IdleTime>k__BackingField: 6
+  <RunningTime>k__BackingField: 5
+  <StoppingDistance>k__BackingField: 1
   <IsIdle>k__BackingField: IsIdle
   <IsAngry>k__BackingField: IsAngry
   <IsLive>k__BackingField: IsLive
@@ -232,10 +240,6 @@ MonoBehaviour:
   <DiedTrigger>k__BackingField: DiedTrigger
   <AttackTrigger>k__BackingField: AttackTrigger
   <TakeDamageTrigger>k__BackingField: TakeDamageTrigger
-  <AngryDistance>k__BackingField: 6
-  <AttackDistance>k__BackingField: 1
-  <IdleTime>k__BackingField: 6
-  <RunningTime>k__BackingField: 5
 --- !u!1 &8593721069458762199
 GameObject:
   m_ObjectHideFlags: 0

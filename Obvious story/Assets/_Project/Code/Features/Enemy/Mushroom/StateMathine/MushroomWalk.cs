@@ -25,7 +25,7 @@ public class MushroomWalk : StateMachineBehaviour
             _mushroom.FlipEnemyToTarget(_targetTransform);
             _mushroom.Move(_targetTransform);
 
-            if (Vector2.Distance(_mushroom.transform.position, _targetTransform.position) < 0.5f)
+            if (Vector2.Distance(_mushroom.transform.position, _targetTransform.position) < _mushroom.StoppingDistance)
                 _targetTransform = _movingPoints[Random.Range(0, _movingPoints.Length)];
 
             _time += Time.deltaTime;

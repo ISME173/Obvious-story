@@ -9,7 +9,6 @@ public class PlayerFallCheker : MonoBehaviour
 
     [Inject] private PlayerMoving _playerMoving;
     private Coroutine _playerInAirCoroutine;
-    private Animator _animator;
 
     public event Action<bool> OnPlayerFall;
 
@@ -17,20 +16,6 @@ public class PlayerFallCheker : MonoBehaviour
     {
         if (_playerIsGroundTrigger == null)
             _playerIsGroundTrigger = FindAnyObjectByType<PlayerIsGroundTrigger>();
-
-        if (TryGetComponent(out Animator animator))
-            _animator = animator;
-        else
-            _animator = FindAnyObjectByType<Animator>();
-    }
-
-    private void OnEnable()
-    {
-        _playerIsGroundTrigger.OnGroundExit += () =>
-        {
-            if (gameObject.activeSelf)
-                _playerInAirCoroutine = StartCoroutine(CheckIsFall());
-        };
     }
     private void Start()
     {
@@ -41,18 +26,11 @@ public class PlayerFallCheker : MonoBehaviour
                 StopCoroutine(_playerInAirCoroutine);
                 _playerInAirCoroutine = null;
             }
-            if (_animator.GetCurrentAnimatorStateInfo(0).IsName("MainPlayerJump"))
-            {
-                OnPlayerFall?.Invoke(false);
-            }
         };
-
-        _playerIsGroundTrigger.OnGroundStay += () =>
+        _playerIsGroundTrigger.OnGroundExit += () =>
         {
-            if (_animator.GetCurrentAnimatorStateInfo(0).IsName("MainPlayerJump"))
-            {
-                OnPlayerFall?.Invoke(false);
-            }
+            if (gameObject.activeSelf)
+                _playerInAirCoroutine = StartCoroutine(CheckIsFall());
         };
     }
     private IEnumerator CheckIsFall()
@@ -60,10 +38,12 @@ public class PlayerFallCheker : MonoBehaviour
         if (_playerMoving.Rigidbody2D.velocity.y >= 0)
         {
             while (_playerMoving.Rigidbody2D.velocity.y >= 0)
-            {
                 yield return null;
-                continue;
-            }
+
+            OnPlayerFall?.Invoke(true);
+        }
+        else if(_playerMoving.Rigidbody2D.velocity.y < 0)
+        {
             OnPlayerFall?.Invoke(true);
         }
     }

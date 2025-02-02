@@ -25,7 +25,7 @@ public class SkeletonWalk : StateMachineBehaviour
             _skeleton.FlipEnemyToTarget(_targetTransform);
             _skeleton.Move(_targetTransform);
 
-            if (Vector2.Distance(_skeleton.transform.position, _targetTransform.position) < 0.5f)
+            if (Vector2.Distance(_skeleton.transform.position, _targetTransform.position) < _skeleton.StoppingDistance)
                 _targetTransform = _movingPoints[Random.Range(0, _movingPoints.Length)];
 
             _time += Time.deltaTime;

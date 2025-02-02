@@ -330,16 +330,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackDamage: 1
-  _maxHeartsCount: 5
+  _maxHeartsCount: 4
   _diedAnimationTime: 1.1
   _attackVariantsCount: 1
   _angryMovingSpeed: 3
   _normalMovingSpeed: 2
+  _usingVariationForStates: 1
+  _variationForStates: 1
   _raycastStartTransform: {fileID: 3522007092429939235}
   _ignoreLayerMaskForRaycast:
     serializedVersion: 2
     m_Bits: 132
-  _canGoThroughAPlayer: 1
+  _canGoThroughAPlayerAndEnemy: 1
+  _canTakeDamageAnyEnemy: 0
+  <AngryDistance>k__BackingField: 5
+  <AttackDistance>k__BackingField: 0.8
+  <IdleTime>k__BackingField: 4
+  <RunningTime>k__BackingField: 5
+  <StoppingDistance>k__BackingField: 1
   <IsIdle>k__BackingField: IsIdle
   <IsAngry>k__BackingField: IsAngry
   <IsLive>k__BackingField: IsLive
@@ -347,7 +355,3 @@ MonoBehaviour:
   <DiedTrigger>k__BackingField: DiedTrigger
   <AttackTrigger>k__BackingField: AttackTrigger
   <TakeDamageTrigger>k__BackingField: TakeDamageTrigger
-  <AngryDistance>k__BackingField: 5
-  <AttackDistance>k__BackingField: 0.8
-  <IdleTime>k__BackingField: 4
-  <RunningTime>k__BackingField: 5

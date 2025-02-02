@@ -8,6 +8,10 @@ public class Skeleton : GroundEnemy
     {
         _animator.SetTrigger(DiedTrigger);
         _animator.SetBool(IsLive, false);
+        _rigidbody2d.isKinematic = true;
+        _collider.isTrigger = true;
+
+        SetMovingSpeedToZero();
 
         yield return new WaitForSeconds(diedAnimationTime);
 

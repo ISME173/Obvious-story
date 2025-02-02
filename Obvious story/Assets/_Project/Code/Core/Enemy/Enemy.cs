@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 
@@ -9,17 +10,22 @@ public abstract class Enemy : MonoBehaviour, IDamagable, IDestroyable
     [SerializeField, Min(1)] protected int _maxHeartsCount;
     [Space]
     [SerializeField, Min(1)] protected float _diedAnimationTime;
-    [SerializeField, Min(1)] private int _attackVariantsCount = 1;
+    [SerializeField, Min(1)] protected int _attackVariantsCount = 1;
     [Space]
     [SerializeField, Min(1)] protected float _angryMovingSpeed;
     [SerializeField, Min(1)] protected float _normalMovingSpeed;
+    [Space]
+    [SerializeField] protected bool _usingVariationForStates;
+    [ShowIf(nameof(_usingVariationForStates))]
+    [SerializeField, Min(0.1f)] protected float _variationForStates = 0.1f;
 
-    [Header("Raycast states")]
+    [Header("Raycast states"), Space]
     [SerializeField] protected Transform _raycastStartTransform;
     [SerializeField] protected LayerMask _ignoreLayerMaskForRaycast;
 
-    [Header("Interaction with player")]
-    [SerializeField] protected bool _canGoThroughAPlayer = false;
+    [Header("Interaction with player and any enemy"), Space]
+    [SerializeField] protected bool _canGoThroughAPlayerAndEnemy = true;
+    [SerializeField] protected bool _canTakeDamageAnyEnemy = false;
 
     protected PlayerMoving PlayerMoving;
     protected Transform[] _movingPoints;
@@ -29,10 +35,20 @@ public abstract class Enemy : MonoBehaviour, IDamagable, IDestroyable
     protected SpriteRenderer _spriteRenderer;
     protected int _heartsCount;
     protected float _movingSpeed;
+    protected bool _isLive = true;
 
     public event Action<IDestroyable> Destroyed;
     public event Action<Enemy> OnDied;
     public event Action<Enemy> Disabled;
+
+    [field: Header("Distance to player, for..."), Space]
+    [field: SerializeField, Min(0.1f)] public float AngryDistance { get; protected set; }
+    [field: SerializeField, Min(0.1f)] public float AttackDistance { get; protected set; }
+    [field: Space]
+    [field: SerializeField, Min(0.1f)] public float IdleTime { get; protected set; }
+    [field: SerializeField, Min(0)] public float RunningTime { get; protected set; }
+    [field: Space]
+    [field: SerializeField, Min(0)] public float StoppingDistance { get; protected set; } = 0.5f;
 
     [field: Header("Enemy animator properties"), Space]
     [field: SerializeField] public string IsIdle { get; protected set; }
@@ -44,15 +60,17 @@ public abstract class Enemy : MonoBehaviour, IDamagable, IDestroyable
     [field: SerializeField] public string AttackTrigger { get; protected set; }
     [field: SerializeField] public string TakeDamageTrigger { get; protected set; }
 
-    [field: Header("Distance to player, for..."), Space]
-    [field: SerializeField] public float AngryDistance { get; protected set; }
-    [field: SerializeField] public float AttackDistance { get; protected set; }
-
-    [field: Space]
-    [field: SerializeField] public float IdleTime { get; protected set; }
-    [field: SerializeField] public float RunningTime { get; protected set; }
-
     public int AttackVariantsCount => _attackVariantsCount;
+    public bool CanTakeDamageAnyEnemy => _canTakeDamageAnyEnemy;
+
+    private void Awake()
+    {
+        if (_usingVariationForStates)
+        {
+            IdleTime = _usingVariationForStates ? RandomExtensions.RangeWithDeviation(IdleTime, _variationForStates) : IdleTime;
+            RunningTime = _usingVariationForStates ? RandomExtensions.RangeWithDeviation(RunningTime, _variationForStates) : RunningTime;
+        }
+    }
 
     private void OnDisable()
     {
@@ -64,9 +82,6 @@ public abstract class Enemy : MonoBehaviour, IDamagable, IDestroyable
         Destroyed?.Invoke(this);
     }
 
-    protected abstract void OnCollisionEnter2D(Collision2D collision);
-    protected abstract void OnTriggerExit2D(Collider2D collision);
-
     protected virtual void Attack(IDamagable damagable)
     {
         damagable.TakeDamage(_attackDamage);
@@ -74,7 +89,6 @@ public abstract class Enemy : MonoBehaviour, IDamagable, IDestroyable
     protected virtual void Died()
     {
         OnDied?.Invoke(this);
-        SetMovingSpeedToZero();
     }
 
     public virtual void Init(PlayerMoving playerMoving, Transform[] movingPoints, bool isInstantiated)
@@ -96,6 +110,7 @@ public abstract class Enemy : MonoBehaviour, IDamagable, IDestroyable
         _heartsCount = _maxHeartsCount;
         _movingSpeed = _normalMovingSpeed;
         _collider.enabled = true;
+        _isLive = true;
 
         _animator.SetBool(IsLive, true);
     }
@@ -118,7 +133,7 @@ public abstract class Enemy : MonoBehaviour, IDamagable, IDestroyable
     }
     public virtual void TakeDamage(int damage)
     {
-        if (_heartsCount <= 0)
+        if (_isLive == false)
             return;
 
         //Debug.Log($"{gameObject.name} take damage");
@@ -129,13 +144,22 @@ public abstract class Enemy : MonoBehaviour, IDamagable, IDestroyable
         if (_heartsCount <= 0)
         {
             _heartsCount = 0;
+            _isLive = false;
             Died();
         }
     }
     public Transform GetPlayerTargetPoint() => PlayerMoving.TargetPoint;
     public Transform[] GetMovingPoints() => _movingPoints;
-    public void AngryMovingSpeedActivate() => _movingSpeed = _angryMovingSpeed;
-    public void NormalMovingSpeedActivate() => _movingSpeed = _normalMovingSpeed;
+    public void AngryMovingSpeedActivate()
+    {
+        if (_usingVariationForStates)
+            _movingSpeed = _usingVariationForStates ? RandomExtensions.RangeWithDeviation(_angryMovingSpeed, _variationForStates) : _angryMovingSpeed;
+    }
+    public void NormalMovingSpeedActivate()
+    {
+        if (_usingVariationForStates)
+            _movingSpeed = _usingVariationForStates ? RandomExtensions.RangeWithDeviation(_normalMovingSpeed, _variationForStates) : _normalMovingSpeed;
+    }
     public void SetMovingSpeedToZero()
     {
         _rigidbody2d.velocity = Vector3.zero;

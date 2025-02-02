@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using Zenject;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,10 +11,12 @@ public class UIManager : MonoBehaviour
     [SerializeField, Min(0)] private float _timeToActivateRestartPanelBeforePlayerDied = 1.5f;
     [Space]
     [SerializeField] private LoadingPanel _loadingPanel;
+    [Space]
+    [SerializeField] private FinishPanel _finishPanel;
 
     private static UIManager _instance;
 
-    [HideInInspector] public UnityEvent ButtonPlayClick, ButtonRestartClick, ButtonSettingsClick;
+    [HideInInspector] public UnityEvent ButtonPlayClick, ButtonRestartClick, ButtonSettingsClick, ButtonNextLevelClick;
 
     public static UIManager Instance
     {
@@ -61,6 +62,15 @@ public class UIManager : MonoBehaviour
             _restartPanel.Disable();
         }));
 
+        _finishPanel.NextLevelButton.onClick.AddListener((() =>
+        {
+            ButtonNextLevelClick?.Invoke();
+        }));
+        _finishPanel.ReturnButton.onClick.AddListener((() =>
+        {
+            _finishPanel.Disable();
+        }));
+
         GameManager.Instance.OnGameOpen.AddListener((() =>
         {
             if (GameManager.IsFirstGameOpen)
@@ -73,6 +83,20 @@ public class UIManager : MonoBehaviour
         }));
 
         GameManager.Instance.OnRestart.AddListener((() =>
+        {
+            _loadingPanel.Activate();
+        }));
+
+        GameManager.Instance.OnPlayerFinishEnter.AddListener((() =>
+        {
+            _finishPanel.Enable();
+        }));
+        GameManager.Instance.OnPlayerFinishExit.AddListener((() =>
+        {
+            if (_finishPanel.IsEnable == true)
+                _finishPanel.Disable();
+        }));
+        GameManager.Instance.OnLoadScene.AddListener((() =>
         {
             _loadingPanel.Activate();
         }));

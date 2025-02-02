@@ -2,20 +2,26 @@ using UnityEngine;
 
 public abstract class GroundEnemy : Enemy
 {
-    protected override void OnCollisionEnter2D(Collision2D collision)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.TryGetComponent(out PlayerMoving playerMoving) && _canGoThroughAPlayer)
+        if (collision.transform.TryGetComponent(out PlayerMoving playerMoving) && _canGoThroughAPlayerAndEnemy)
         {
-            _collider.isTrigger = true;
-            _rigidbody2d.isKinematic = true;
+            if (_isLive)
+            {
+                _collider.isTrigger = true;
+                _rigidbody2d.isKinematic = true;
+            }
         }
     }
-    protected override void OnTriggerExit2D(Collider2D collision)
+    protected virtual void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.transform.TryGetComponent(out PlayerMoving playerMoving) && _canGoThroughAPlayer)
+        if (collision.transform.TryGetComponent(out PlayerMoving playerMoving) && _canGoThroughAPlayerAndEnemy)
         {
-            _collider.isTrigger = false;
-            _rigidbody2d.isKinematic = false;
+            if (_isLive)
+            {
+                _collider.isTrigger = false;
+                _rigidbody2d.isKinematic = false;
+            }
         }
     }
 

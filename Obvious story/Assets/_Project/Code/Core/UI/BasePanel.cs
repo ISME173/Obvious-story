@@ -10,6 +10,8 @@ public abstract class BasePanel : MonoBehaviour
 
     protected Animator _animator;
 
+    public bool IsEnable { get; private set; } = false;
+
     protected virtual void Init()
     {
         _animator = GetComponent<Animator>();
@@ -22,10 +24,12 @@ public abstract class BasePanel : MonoBehaviour
     {
         gameObject.SetActive(true);
         _animator.SetTrigger(_disableParameter);
+        IsEnable = false;
     }
     public virtual void Enable()
     {
         gameObject.SetActive(true);
         _animator.SetTrigger(_enableParameter);
+        IsEnable = true;
     }
 }

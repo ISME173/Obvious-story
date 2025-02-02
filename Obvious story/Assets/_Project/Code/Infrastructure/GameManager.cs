@@ -3,7 +3,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using Zenject;
+using System;
+using System.Collections.Generic;
+using UnityEditor.SearchService;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,13 +16,17 @@ public class GameManager : MonoBehaviour
     [ShowIf(nameof(_usingDelayBeforeStartLoadingLevel))]
     [SerializeField, Min(0)] private float _timeSpreadForLoadLevel = 0;
 
-    [Inject] private PlayerHealthManager _playerHealthManager;
+    [Space]
+    [SerializeField] private List<string> _levelNames;
+
+    private int _currentLevel = 0;
 
     private static GameManager _instance;
 
-    [HideInInspector] public UnityEvent OnPlay, OnRestart, OnGameOver, RestartSceneLoaoded;
-    [HideInInspector] public UnityEvent<Scene> OnSceneLoaoded;
-    [HideInInspector] public UnityEvent OnGameOpen;
+    [HideInInspector] public UnityEvent OnPlay, OnRestart, OnGameOver, RestartSceneLoaoded, OnGameOpen,
+        OnPlayerFinishEnter, OnPlayerFinishExit, OnLoadScene;
+
+    [HideInInspector] public UnityEvent<UnityEngine.SceneManagement.Scene> OnSceneLoaoded;
 
     private float DelayBeforeTheSceneStartLoading
     {
@@ -28,7 +34,7 @@ public class GameManager : MonoBehaviour
         {
             if (_usingDelayBeforeStartLoadingLevel)
             {
-                return Random.Range(_delayBeforeTheSceneStartLoading - _timeSpreadForLoadLevel, _delayBeforeTheSceneStartLoading
+                return UnityEngine.Random.Range(_delayBeforeTheSceneStartLoading - _timeSpreadForLoadLevel, _delayBeforeTheSceneStartLoading
                     + _timeSpreadForLoadLevel);
             }
             else
@@ -71,46 +77,65 @@ public class GameManager : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(gameObject);
         }
+
+        if (_levelNames.Count == 0)
+            throw new ArgumentNullException($"{nameof(_levelNames)} is empty");
+
         IsFirstGameOpen = true;
-        AddListeners();
+        AddListenersOnFirstGameOpen();
     }
     private void Start()
     {
         OnGameOpen?.Invoke();
     }
-    private void AddListeners()
+    private void AddListenersOnFirstGameOpen()
     {
-        UIManager.Instance.ButtonPlayClick.AddListener(Play);
-        UIManager.Instance.ButtonRestartClick.AddListener(Restart);
+        AddListeners();
 
         OnSceneLoaoded.AddListener(((scene) =>
         {
+            AddListeners();
+
             if (SceneManager.GetActiveScene().name == scene.name)
             {
                 RestartSceneLoaoded?.Invoke();
                 IsGameStarting = true;
-
-                _playerHealthManager.PlayerDied.AddListener((() =>
-                {
-                    OnGameOver?.Invoke();
-                }));
             }
         }));
+    }
+    private void AddListeners()
+    {
+        UIManager.Instance.ButtonPlayClick.AddListener(Play);
+        UIManager.Instance.ButtonRestartClick.AddListener(Restart);
+        UIManager.Instance.ButtonNextLevelClick.AddListener(NextLevel);
 
-        _playerHealthManager.PlayerDied.AddListener((() =>
+        FindAnyObjectByType<PlayerHealthManager>().PlayerDied.AddListener((() =>
         {
             OnGameOver?.Invoke();
         }));
 
-        RestartSceneLoaoded.AddListener((() =>
+        AddListenersToFinishTrigger();
+    }
+    private void AddListenersToFinishTrigger()
+    {
+        FinishInLevelTrigger finishInLevelTrigger = FindAnyObjectByType<FinishInLevelTrigger>();
+        if (finishInLevelTrigger != null)
         {
-            UIManager.Instance.ButtonRestartClick.AddListener(Restart);
-
-            if (_playerHealthManager == null)
+            finishInLevelTrigger.OnPlayerFinishTriggerEnter.AddListener((() =>
             {
-                _playerHealthManager = FindAnyObjectByType<PlayerHealthManager>();
-            }
-        }));
+                OnPlayerFinishEnter?.Invoke();
+                //Debug.Log("On player finish enter");
+            }));
+            finishInLevelTrigger.OnPlayerFinishTriggerExit.AddListener((() =>
+            {
+                OnPlayerFinishExit?.Invoke();
+                //Debug.Log("On player finish exit");
+            }));
+        }
+        else
+        {
+            //Debug.Log("Null");
+        }
     }
     private void Play()
     {
@@ -124,9 +149,20 @@ public class GameManager : MonoBehaviour
         IsFirstGameOpen = false;
         LoadScene(SceneManager.GetActiveScene().name, DelayBeforeTheSceneStartLoading);
     }
+    private void NextLevel()
+    {
+        _currentLevel++;
 
+        if (_currentLevel + 1 > _levelNames.Count)
+        {
+            throw new ArgumentOutOfRangeException($"{nameof(_levelNames)} out of tolerance");
+        }
+
+        LoadScene(_levelNames[_currentLevel], DelayBeforeTheSceneStartLoading);
+    }
     private void LoadScene(string sceneName, float delayToLoadScene)
     {
+        OnLoadScene?.Invoke();
         StartCoroutine(LoadSceneStart(delayToLoadScene, sceneName));
     }
     private IEnumerator LoadSceneStart(float delayToLoadScene, string sceneLoadName)
@@ -135,13 +171,13 @@ public class GameManager : MonoBehaviour
 
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneLoadName);
 
-        while (!asyncOperation.isDone)
+        while (asyncOperation.isDone == false)
             yield return null;
 
         if (SceneManager.GetActiveScene().isLoaded == false)
         {
             while (SceneManager.GetActiveScene().isLoaded == false)
-                continue;
+                yield return null;
         }
 
         OnSceneLoaoded?.Invoke(SceneManager.GetSceneByName(sceneLoadName));
