@@ -18,19 +18,19 @@ public class KristalGolemWalk : StateMachineBehaviour
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (_kristalGolem.RaycastToPlayer(_kristalGolem.AngryDistance))
-            animator.SetBool(_kristalGolem.IsAngry, true);
+        if (_kristalGolem.RaycastToPlayer(_kristalGolem.EnemyData.AngryDistance))
+            animator.SetBool(_kristalGolem.EnemyData.IsAngry, true);
         else
         {
             _kristalGolem.FlipEnemyToTarget(_targetTransform);
             _kristalGolem.Move(_targetTransform);
 
-            if (Vector2.Distance(_kristalGolem.transform.position, _targetTransform.position) < _kristalGolem.StoppingDistance)
+            if (Vector2.Distance(_kristalGolem.transform.position, _targetTransform.position) < _kristalGolem.EnemyData.StoppingDistance)
                 _targetTransform = _movingPoints[Random.Range(0, _movingPoints.Length)];
 
             _time += Time.deltaTime;
             if (_time >= _kristalGolem.RunningTime)
-                animator.SetBool(_kristalGolem.IsIdle, true);
+                animator.SetBool(_kristalGolem.EnemyData.IsIdle, true);
         }
     }
 }

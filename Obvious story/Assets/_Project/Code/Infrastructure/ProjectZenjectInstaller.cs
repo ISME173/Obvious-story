@@ -1,52 +1,22 @@
+using System;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 public class ProjectZenjectInstaller : MonoInstaller
 {
-    [Header("Mobile input")]
-    [SerializeField] private Joystick _playerJoystick;
-    [SerializeField] private Button _playerAttackButton;
-
-    [Header("Desktop input")]
-    [SerializeField] private DesktopInput _desktopInput;
-
-    [Header("Other")]
-    [SerializeField] private PlayerMoving _playerMoving;
-    [SerializeField] private PlayerHealthManager _playerHealthManager;
-    [SerializeField] private UIManager _uiManager;
+    [Header("Game states")]
+    [SerializeField] private GameSettings _gameSettings;
+    [SerializeField] private SoundSettings _soundSettings;
 
     public override void InstallBindings()
     {
-        switch (SystemInfo.deviceType)
-        {
-            case DeviceType.Handheld:
-                Container.BindInterfacesAndSelfTo<MobileInput>().FromInstance(new MobileInput(_playerJoystick, _playerAttackButton));
-                StateOnInMobileInput();
-                break;
-            case DeviceType.Desktop:
-                Container.BindInterfacesAndSelfTo<DesktopInput>().FromInstance(_desktopInput);
-                StateOffInDecktopInput();
-                break;
-        }
+        if (_gameSettings == null)
+            throw new NullReferenceException(nameof(_gameSettings));
 
-        if (_uiManager == null)
-            _uiManager = FindAnyObjectByType<UIManager>();
+        if (_soundSettings == null)
+            throw new NullReferenceException(nameof(_soundSettings));
 
-        Container.Bind<PlayerMoving>().FromInstance(_playerMoving);
-        Container.Bind<PlayerHealthManager>().FromInstance(_playerHealthManager).NonLazy();
-        Container.Bind<UIManager>().FromInstance(_uiManager);
-
-        //Container.Bind<ZenjectSettings>().FromInstance(new ZenjectSettings(ValidationErrorResponses.Log));
-    }
-    private void StateOffInDecktopInput()
-    {
-        _playerJoystick.gameObject.SetActive(false);
-        _playerAttackButton.gameObject.SetActive(false);
-    }
-    private void StateOnInMobileInput()
-    {
-        _playerJoystick.gameObject.SetActive(true);
-        _playerAttackButton?.gameObject.SetActive(true);
+        Container.Bind<GameSettings>().FromInstance(_gameSettings);
+        Container.Bind<SoundSettings>().FromInstance(_soundSettings);
     }
 }

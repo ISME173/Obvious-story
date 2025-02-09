@@ -1,4 +1,4 @@
-public class KristalGolemSpawner : EnemySpawner<KristalGolem>
+public class KristalGolemSpawner : EnemySpawner<KristalGolemData, KristalGolem>
 {
-    
+
 }

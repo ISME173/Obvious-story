@@ -8,20 +8,20 @@ public class MushroomIdle : StateMachineBehaviour
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         _mushroom = animator.GetComponent<Mushroom>();
-        _mushroom.SetMovingSpeedToZero();
+        _mushroom.StopEnemyInIsIdleState();
         _time = 0;
     }
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (_mushroom.RaycastToPlayer(_mushroom.AngryDistance))
+        if (_mushroom.RaycastToPlayer(_mushroom.EnemyData.AngryDistance))
         {
-            animator.SetBool(_mushroom.IsAngry, true);
+            animator.SetBool(_mushroom.EnemyData.IsAngry, true);
         }
         else
         {
             _time += Time.deltaTime;
             if (_time >= _mushroom.IdleTime)
-                animator.SetBool(_mushroom.IsIdle, false);
+                animator.SetBool(_mushroom.EnemyData.IsIdle, false);
         }
     }
 }

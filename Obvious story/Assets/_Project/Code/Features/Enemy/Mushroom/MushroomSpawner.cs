@@ -1,4 +1,4 @@
-public class MushroomSpawner : EnemySpawner<Mushroom>
+public class MushroomSpawner : EnemySpawner<MushroomData, Mushroom>
 {
 
 }

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8296578729715838179}
   - component: {fileID: 4217967863754723830}
-  - component: {fileID: 5234488738699489029}
+  - component: {fileID: 5586794759678992242}
   m_Layer: 2
   m_Name: AttackTrigger1
   m_TagString: Untagged
@@ -68,7 +68,7 @@ CapsuleCollider2D:
   m_Offset: {x: -0.51, y: 0}
   m_Size: {x: 0.5, y: 0.09}
   m_Direction: 0
---- !u!114 &5234488738699489029
+--- !u!114 &5586794759678992242
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -77,10 +77,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2304938447633672937}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c229c185817c8294f913f35986c66782, type: 3}
+  m_Script: {fileID: 11500000, guid: c2ee4555c94fab148add0588fd112946, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ignoreEnemyDamagable: {fileID: 2978839298191637926}
+  _ignoreDamagable: {fileID: 2978839298191637926}
+  _ignoreLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  _isTrigger: 1
 --- !u!1 &3397343105287899198
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,31 +218,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62497477a99d7714fb9ff244a941ef54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackDamage: 1
-  _maxHeartsCount: 2
-  _diedAnimationTime: 1
-  _attackVariantsCount: 2
-  _angryMovingSpeed: 3
-  _normalMovingSpeed: 2
-  _usingVariationForStates: 1
-  _variationForStates: 1
   _raycastStartTransform: {fileID: 8418186040917940259}
-  _ignoreLayerMaskForRaycast:
-    serializedVersion: 2
-    m_Bits: 140
-  _canGoThroughAPlayerAndEnemy: 1
-  _canTakeDamageAnyEnemy: 0
-  <AngryDistance>k__BackingField: 5
-  <AttackDistance>k__BackingField: 1
-  <IdleTime>k__BackingField: 4
-  <RunningTime>k__BackingField: 5
-  <IsIdle>k__BackingField: IsIdle
-  <IsAngry>k__BackingField: IsAngry
-  <IsLive>k__BackingField: IsLive
-  <IsAttack>k__BackingField: IsAttack
-  <DiedTrigger>k__BackingField: DiedTrigger
-  <AttackTrigger>k__BackingField: AttackTrigger
-  <TakeDamageTrigger>k__BackingField: TakeDamageTrigger
+  _enemyData: {fileID: 11400000, guid: d67c83beb54ce2f41bc820838868e918, type: 2}
 --- !u!1 &3468158151024023125
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,7 +345,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1840295415770145279}
   - component: {fileID: 7882185659953945371}
-  - component: {fileID: 5922004710303953355}
+  - component: {fileID: 1422275212410369758}
   m_Layer: 2
   m_Name: AttackTrigger2
   m_TagString: Untagged
@@ -422,7 +403,7 @@ CapsuleCollider2D:
   m_Offset: {x: -0.51, y: 0}
   m_Size: {x: 0.5, y: 0.09}
   m_Direction: 1
---- !u!114 &5922004710303953355
+--- !u!114 &1422275212410369758
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -431,10 +412,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8360506214372316849}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c229c185817c8294f913f35986c66782, type: 3}
+  m_Script: {fileID: 11500000, guid: c2ee4555c94fab148add0588fd112946, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ignoreEnemyDamagable: {fileID: 2978839298191637926}
+  _ignoreDamagable: {fileID: 2978839298191637926}
+  _ignoreLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  _isTrigger: 1
 --- !u!1 &8426486109545942925
 GameObject:
   m_ObjectHideFlags: 0

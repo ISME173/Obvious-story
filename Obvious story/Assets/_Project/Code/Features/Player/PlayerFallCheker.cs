@@ -10,7 +10,7 @@ public class PlayerFallCheker : MonoBehaviour
     [Inject] private PlayerMoving _playerMoving;
     private Coroutine _playerInAirCoroutine;
 
-    public event Action<bool> OnPlayerFall;
+    public event Action OnPlayerFall;
 
     private void Awake()
     {
@@ -40,11 +40,11 @@ public class PlayerFallCheker : MonoBehaviour
             while (_playerMoving.Rigidbody2D.velocity.y >= 0)
                 yield return null;
 
-            OnPlayerFall?.Invoke(true);
+            OnPlayerFall?.Invoke();
         }
         else if(_playerMoving.Rigidbody2D.velocity.y < 0)
         {
-            OnPlayerFall?.Invoke(true);
+            OnPlayerFall?.Invoke();
         }
     }
 }

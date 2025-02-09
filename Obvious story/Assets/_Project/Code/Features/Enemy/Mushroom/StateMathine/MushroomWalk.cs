@@ -18,19 +18,19 @@ public class MushroomWalk : StateMachineBehaviour
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (_mushroom.RaycastToPlayer(_mushroom.AngryDistance))
-            animator.SetBool(_mushroom.IsAngry, true);
+        if (_mushroom.RaycastToPlayer(_mushroom.EnemyData.AngryDistance))
+            animator.SetBool(_mushroom.EnemyData.IsAngry, true);
         else
         {
             _mushroom.FlipEnemyToTarget(_targetTransform);
             _mushroom.Move(_targetTransform);
 
-            if (Vector2.Distance(_mushroom.transform.position, _targetTransform.position) < _mushroom.StoppingDistance)
+            if (Vector2.Distance(_mushroom.transform.position, _targetTransform.position) < _mushroom.EnemyData.StoppingDistance)
                 _targetTransform = _movingPoints[Random.Range(0, _movingPoints.Length)];
 
             _time += Time.deltaTime;
             if (_time >= _mushroom.RunningTime)
-                animator.SetBool(_mushroom.IsIdle, true);
+                animator.SetBool(_mushroom.EnemyData.IsIdle, true);
         }
     }
 }

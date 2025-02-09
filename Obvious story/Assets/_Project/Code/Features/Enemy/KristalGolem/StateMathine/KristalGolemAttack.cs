@@ -6,8 +6,8 @@ public class KristalGolemAttack : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         _kristalGolem = animator.GetComponent<KristalGolem>();
-        animator.SetBool(_kristalGolem.IsAttack, true);
-        _kristalGolem.SetMovingSpeedToZero();
+        animator.SetBool(_kristalGolem.EnemyData.IsAttack, true);
+        _kristalGolem.StopEnemyInIsIdleState();
     }
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -15,6 +15,6 @@ public class KristalGolemAttack : StateMachineBehaviour
     }
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool(_kristalGolem.IsAttack, false);
+        animator.SetBool(_kristalGolem.EnemyData.IsAttack, false);
     }
 }

@@ -47,6 +47,11 @@ public class PlayerMoving : MonoBehaviour
             _rigidbody2d.velocity = Vector2.zero;
             _speed = 0;
         }));
+        GameManager.Instance.OnGamePause.AddListener(() =>
+        {
+            _rigidbody2d.velocity = new Vector2(0, _rigidbody2d.velocity.y);
+            TargetVelosity = _rigidbody2d.velocity;
+        });
     }
 
     private void OnEnable()
@@ -74,7 +79,7 @@ public class PlayerMoving : MonoBehaviour
     }
     private void Jump()
     {
-        if (_playerIsGroundTrigger.IsGround && GameManager.Instance.IsGameStarting)
+        if ((_canMoving && _playerIsGroundTrigger.IsGround) && GameManager.Instance.IsGameStarting)
         {
             JumpActivate?.Invoke();
             _rigidbody2d.velocity = Vector2.up * _jumpForce;

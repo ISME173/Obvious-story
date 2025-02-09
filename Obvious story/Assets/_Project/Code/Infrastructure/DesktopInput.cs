@@ -1,21 +1,29 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class DesktopInput : MonoBehaviour, IUserInput
 {
-    [SerializeField] private KeyCode _playerJumpKeyCode;
-    [SerializeField] private KeyCode _playerAttackKeyCode;
+    [Inject] private GameSettings _gameSettings;
+    private Dictionary<KeyCode, Action> _keyCodeToEvent = new Dictionary<KeyCode, Action>();
 
-    public event Action OnPlayerJumpButtonDown;
-    public event Action OnPlayerAttackActivate;
+    public event Action OnPlayerAttackActivate, OnPauseActivate, OnPlayerJumpButtonDown;
+
+    private void Start()
+    {
+        _keyCodeToEvent.Add(_gameSettings.PauseKeyCode, OnPauseActivate);
+        _keyCodeToEvent.Add(_gameSettings.PlayerJumpKeyCode, OnPlayerJumpButtonDown);
+        _keyCodeToEvent.Add(_gameSettings.PlayerAttackKeyCode, OnPlayerAttackActivate);
+    }
 
     private void Update()
     {
-        if (Input.GetKeyDown(_playerJumpKeyCode))
-            OnPlayerJumpButtonDown?.Invoke();
-
-        else if (Input.GetKeyDown(_playerAttackKeyCode))
-            OnPlayerAttackActivate?.Invoke();
+        foreach (var keyAction in _keyCodeToEvent)
+        {
+            if (Input.GetKeyDown(keyAction.Key))
+                keyAction.Value?.Invoke();
+        }
     }
 
     public float GetPlayerMovingHorizontalInput(float speed)

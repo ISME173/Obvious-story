@@ -93,7 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3522007092429939235}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: StartRaycast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8036995473659847525}
   - component: {fileID: 5096226232021173789}
-  - component: {fileID: 7543454918613765107}
+  - component: {fileID: 1770637809080625057}
   m_Layer: 2
   m_Name: AttackTrigger
   m_TagString: Untagged
@@ -183,7 +183,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0.031652138, y: -0.06554051}
   m_Size: {x: 0.4366962, y: 0.8221451}
   m_Direction: 0
---- !u!114 &7543454918613765107
+--- !u!114 &1770637809080625057
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -192,10 +192,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5023186529479710652}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c229c185817c8294f913f35986c66782, type: 3}
+  m_Script: {fileID: 11500000, guid: f9ee83477b120a841bd8ee3e210a6fff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ignoreEnemyDamagable: {fileID: 1416832581013319863}
+  _ignoreDamagable: {fileID: 1416832581013319863}
+  _ignoreLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  _isTrigger: 1
 --- !u!1 &8946986348416697911
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,29 +333,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1002a8f55c348643b347bf5cabcb08d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackDamage: 1
-  _maxHeartsCount: 4
-  _diedAnimationTime: 1.1
-  _attackVariantsCount: 1
-  _angryMovingSpeed: 3
-  _normalMovingSpeed: 2
-  _usingVariationForStates: 1
-  _variationForStates: 1
   _raycastStartTransform: {fileID: 3522007092429939235}
-  _ignoreLayerMaskForRaycast:
-    serializedVersion: 2
-    m_Bits: 132
-  _canGoThroughAPlayerAndEnemy: 1
-  _canTakeDamageAnyEnemy: 0
-  <AngryDistance>k__BackingField: 5
-  <AttackDistance>k__BackingField: 0.8
-  <IdleTime>k__BackingField: 4
-  <RunningTime>k__BackingField: 5
-  <StoppingDistance>k__BackingField: 1
-  <IsIdle>k__BackingField: IsIdle
-  <IsAngry>k__BackingField: IsAngry
-  <IsLive>k__BackingField: IsLive
-  <IsAttack>k__BackingField: IsAttack
-  <DiedTrigger>k__BackingField: DiedTrigger
-  <AttackTrigger>k__BackingField: AttackTrigger
-  <TakeDamageTrigger>k__BackingField: TakeDamageTrigger
+  _enemyData: {fileID: 11400000, guid: 2475f2a5bfdcd34428e702858f191387, type: 2}

@@ -1,4 +1,4 @@
-public class SkeletonSpawner : EnemySpawner<Skeleton>
+public class SkeletonSpawner : EnemySpawner<SkeletonData, Skeleton>
 {
     
 }

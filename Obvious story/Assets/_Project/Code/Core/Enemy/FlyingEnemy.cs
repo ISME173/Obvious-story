@@ -1,21 +1,24 @@
 using UnityEngine;
 
-public abstract class FlyingEnemy : Enemy
+public abstract class FlyingEnemy<T> : Enemy<T> where T : EnemyData
 {
-    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform.TryGetComponent(out PlayerMoving playerMoving) && _canGoThroughAPlayerAndEnemy)
+        if (collision.TryGetComponent(out PlayerMoving playerMoving))
         {
-            _collider.isTrigger = true;
+            if (EnemyData.CanGoThroughAPlayerAndEnemy)
+                _collider.isTrigger = true;
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.transform.TryGetComponent(out PlayerMoving playerMoving) && _canGoThroughAPlayerAndEnemy)
+        if (collision.TryGetComponent(out PlayerMoving playerMoving))
         {
-            _collider.isTrigger = true;
+            if (EnemyData.CanGoThroughAPlayerAndEnemy)
+                _collider.isTrigger = false;
         }
     }
+
     public override void Move(Transform point)
     {
         transform.position = Vector2.MoveTowards(transform.position, point.position, _movingSpeed * Time.deltaTime);

@@ -18,19 +18,19 @@ public class SkeletonWalk : StateMachineBehaviour
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (_skeleton.RaycastToPlayer(_skeleton.AngryDistance))
-            animator.SetBool(_skeleton.IsAngry, true);
+        if (_skeleton.RaycastToPlayer(_skeleton.EnemyData.AngryDistance))
+            animator.SetBool(_skeleton.EnemyData.IsAngry, true);
         else
         {
             _skeleton.FlipEnemyToTarget(_targetTransform);
             _skeleton.Move(_targetTransform);
 
-            if (Vector2.Distance(_skeleton.transform.position, _targetTransform.position) < _skeleton.StoppingDistance)
+            if (Vector2.Distance(_skeleton.transform.position, _targetTransform.position) < _skeleton.EnemyData.StoppingDistance)
                 _targetTransform = _movingPoints[Random.Range(0, _movingPoints.Length)];
 
             _time += Time.deltaTime;
             if (_time >= _skeleton.RunningTime)
-                animator.SetBool(_skeleton.IsIdle, true);
+                animator.SetBool(_skeleton.EnemyData.IsIdle, true);
         }
     }
 }

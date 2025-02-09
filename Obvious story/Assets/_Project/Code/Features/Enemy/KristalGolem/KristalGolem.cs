@@ -2,24 +2,30 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class KristalGolem : GroundEnemy
+public class KristalGolem : GroundEnemy<KristalGolemData>
 {
     private IEnumerator DiedStart(float diedAnimationTime, Action died)
     {
-        _animator.SetTrigger(DiedTrigger);
-        _animator.SetBool(IsLive, false);
+        _animator.SetTrigger(EnemyData.DiedTrigger);
+        _animator.SetBool(EnemyData.IsLive, false);
         _rigidbody2d.isKinematic = true;
         _collider.isTrigger = true;
 
-        SetMovingSpeedToZero();
+        StopEnemyInIsIdleState();
 
         yield return new WaitForSeconds(diedAnimationTime);
 
         died();
     }
+    protected override void AddAttackListenersToOnDamagebleCollideCheckWithEnemy()
+    {
+        OnDamagableCollideCheckWithKristalGolem[] onDamagableCollideCheckWithKristalGolems = GetComponentsInChildren<OnDamagableCollideCheckWithKristalGolem>();
+        for (int i = 0; i < onDamagableCollideCheckWithKristalGolems.Length; i++)
+            onDamagableCollideCheckWithKristalGolems[i].OnDamagebleColliderEnter += Attack;
+    }
     protected override void Died()
     {
-        StartCoroutine(DiedStart(_diedAnimationTime, base.Died));
+        StartCoroutine(DiedStart(EnemyData.DiedAnimationTime, base.Died));
     }
     public override void FlipEnemyToTarget(Transform target)
     {

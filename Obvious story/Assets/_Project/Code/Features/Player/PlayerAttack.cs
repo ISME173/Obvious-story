@@ -19,19 +19,19 @@ public class PlayerAttack : MonoBehaviour
     {
         if (_attackTypes.Length <= 0)
             throw new ArgumentNullException($"{nameof(_attackTypes)} array is empty");
-    }
 
-    private void Start()
-    {
         GameManager.Instance.OnGameOver.AddListener((() =>
         {
             _userInput.OnPlayerAttackActivate -= AttackStart;
         }));
+    }
 
-        OnPlayerCollideEnterCheck[] onPlayerCollideEnterChecks = GetComponentsInChildren<OnPlayerCollideEnterCheck>();
+    private void Start()
+    {
+        OnDamagableCollideCheckWithPlayer[] onPlayerCollideEnterChecks = GetComponentsInChildren<OnDamagableCollideCheckWithPlayer>();
         for (int i = 0; i < onPlayerCollideEnterChecks.Length; i++)
         {
-            onPlayerCollideEnterChecks[i].OnCollideEnter += (IDamagable damagable) =>
+            onPlayerCollideEnterChecks[i].OnDamagebleColliderEnter += (IDamagable damagable) =>
             {
                 damagable.TakeDamage(LastAttackDamage);
             };
@@ -57,6 +57,7 @@ public class PlayerAttack : MonoBehaviour
     }
     private IEnumerator CanAttackReload(float attackAnimationTime)
     {
+        SoundController.Instance.PlayPlayerSound(PlayerSound.PlayerSoundTypes.SwordSwim, true, true, UnityEngine.Random.Range(0.7f, 1.2f));
         yield return new WaitForSeconds(attackAnimationTime);
         _canAttack = true;
         PlayerAttackEnd?.Invoke();

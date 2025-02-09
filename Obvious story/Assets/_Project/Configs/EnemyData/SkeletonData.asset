@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7174eec970c016846ae63024df38717c, type: 3}
+  m_Name: SkeletonData
+  m_EditorClassIdentifier: 
+  _attackDamage: 1
+  _maxHeartsCount: 4
+  _diedAnimationTime: 1.1
+  _attackVariantsCount: 1
+  _angryMovingSpeed: 3
+  _normalMovingSpeed: 1.5
+  _usingVariationForStates: 1
+  _variationForStates: 1
+  _ignoreLayerMaskForRaycast:
+    serializedVersion: 2
+    m_Bits: 132
+  _canTakeDamageAnyEnemy: 0
+  _canGoThroughAPlayerAndEnemy: 1
+  _distanceToPlayerForGoTroughAPlayer: 1.5
+  _groundLayerNameForEnemy: 
+  _angryDistance: 5
+  _attackDistance: 1
+  _idleTime: 6
+  _runningTime: 6
+  _stoppingDistance: 0.5
+  _isIdle: IsIdle
+  _isAngry: IsAngry
+  _isLive: IsLive
+  _isAttack: IsAttack
+  _diedTrigger: DiedTrigger
+  _attackTrigger: AttackTrigger
+  _takeDamageTrigger: TakeDamageTrigger

@@ -87,6 +87,7 @@ MonoBehaviour:
     _useSpawnPointsHowMovingPoints: 1
     _movingPoints: []
   _enemyPrefab: {fileID: 7878785842650896391, guid: a536ffe56fe22794fbe4efb6a4781ba1, type: 3}
+  _enemyData: {fileID: 0}
   _spawnOnPlay: 1
   _useSpawnerHowContaierForEnemy: 1
   _containerForEnemyInPool: {fileID: 0}

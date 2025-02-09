@@ -17,12 +17,12 @@ public class KristalGolemAngry : StateMachineBehaviour
         _kristalGolem.FlipEnemyToTarget(_targetObject);
         _kristalGolem.Move(_targetObject);
 
-        if (_kristalGolem.RaycastToPlayer(_kristalGolem.AngryDistance) == false)
-            animator.SetBool(_kristalGolem.IsAngry, false);
+        if (_kristalGolem.RaycastToPlayer(_kristalGolem.EnemyData.AngryDistance) == false)
+            animator.SetBool(_kristalGolem.EnemyData.IsAngry, false);
         else
         {
-            if (_kristalGolem.RaycastToPlayer(_kristalGolem.AttackDistance))
-                animator.SetTrigger(_kristalGolem.AttackTrigger);
+            if (_kristalGolem.RaycastToPlayer(_kristalGolem.EnemyData.AttackDistance))
+                animator.SetTrigger(_kristalGolem.EnemyData.AttackTrigger);
         }
     }
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

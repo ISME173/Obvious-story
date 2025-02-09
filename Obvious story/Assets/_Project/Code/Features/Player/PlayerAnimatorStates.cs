@@ -46,6 +46,9 @@ public class PlayerAnimatorStates : MonoBehaviour
         _playerIsGroundTrigger.OnGroundEnter += () =>
         {
             _animator.SetBool(IsGround, true);
+
+            if (_animator.GetCurrentAnimatorStateInfo(0).IsName("MainPlayerJump"))
+                _animator.SetTrigger(IsIdleTrigger);
         };
         _playerIsGroundTrigger.OnGroundExit += () =>
         {
@@ -56,10 +59,9 @@ public class PlayerAnimatorStates : MonoBehaviour
         {
             _animator.SetTrigger(JumpTrigger);
         };
-        _playerFallCheker.OnPlayerFall += (bool isFall) =>
+        _playerFallCheker.OnPlayerFall += () =>
         {
-            string triggersActivate = isFall ? FallTrigger : IsIdleTrigger;
-            _animator.SetTrigger(triggersActivate);
+            _animator.SetTrigger(FallTrigger);
         };
 
         _playerAttack.PlayerAttackActivate += (string attackName) =>

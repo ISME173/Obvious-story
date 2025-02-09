@@ -8,20 +8,20 @@ public class SkeletonIdle : StateMachineBehaviour
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         _skeleton = animator.GetComponent<Skeleton>();
-        _skeleton.SetMovingSpeedToZero();
+        _skeleton.StopEnemyInIsIdleState();
         _time = 0;
     }
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (_skeleton.RaycastToPlayer(_skeleton.AngryDistance))
+        if (_skeleton.RaycastToPlayer(_skeleton.EnemyData.AngryDistance))
         {
-            animator.SetBool(_skeleton.IsAngry, true);
+            animator.SetBool(_skeleton.EnemyData.IsAngry, true);
         }
         else
         {
             _time += Time.deltaTime;
             if (_time >= _skeleton.IdleTime)
-                animator.SetBool(_skeleton.IsIdle, false);
+                animator.SetBool(_skeleton.EnemyData.IsIdle, false);
         }
     }
 }

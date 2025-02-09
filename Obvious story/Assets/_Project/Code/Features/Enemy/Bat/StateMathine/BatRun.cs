@@ -17,8 +17,8 @@ public class BatRun : StateMachineBehaviour
     }
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (_bat.RaycastToPlayer(_bat.AngryDistance))
-            animator.SetBool(_bat.IsAngry, true);
+        if (_bat.RaycastToPlayer(_bat.EnemyData.AngryDistance))
+            animator.SetBool(_bat.EnemyData.IsAngry, true);
         else
         {
             _bat.FlipEnemyToTarget(_targetTransform);
@@ -29,7 +29,7 @@ public class BatRun : StateMachineBehaviour
 
             _time += Time.deltaTime;
             if (_time >= _bat.RunningTime)
-                animator.SetBool(_bat.IsIdle, true);
+                animator.SetBool(_bat.EnemyData.IsIdle, true);
         }
     }
 }

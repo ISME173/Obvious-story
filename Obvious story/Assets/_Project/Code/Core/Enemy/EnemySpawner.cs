@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
 
-public abstract class EnemySpawner<T> : Spawner<Enemy> where T : Enemy
+public abstract class EnemySpawner<Data, EnemyType> : Spawner<EnemyType> where EnemyType : Enemy<Data> where Data : EnemyData
 {
     [SerializeField] protected List<EnemySpawnState> _enemySpawnStates;
     [Space]
-    [SerializeField] protected T _enemyPrefab;
+    [SerializeField] protected EnemyType _enemyPrefab;
     [SerializeField] protected bool _spawnOnPlay;
 
     [Header("Enemy pool states"), Space]
@@ -47,7 +47,7 @@ public abstract class EnemySpawner<T> : Spawner<Enemy> where T : Enemy
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         AllEnemySpawnersManager.Instance.OnInit.AddListener((() =>
         {
@@ -72,23 +72,20 @@ public abstract class EnemySpawner<T> : Spawner<Enemy> where T : Enemy
         Disable?.Invoke();
     }
 
-    protected void Init()
+    protected virtual void Init()
     {
-        _pool = new ObjectPool<Enemy>(ContainerForEnemyInPool, _enemyPrefab);
+        _pool = new ObjectPool<EnemyType>(ContainerForEnemyInPool, _enemyPrefab);
 
         if (_putEnemyToPoolInStart)
         {
             for (int i = 0; i < _enemySpawnStates.Count; i++)
             {
-                for (int j = 0; j < _enemySpawnStates[i].SpawnCount; j++)
-                {
-                    InstantiateObjectsToPool(_enemySpawnStates[i]);
-                }
+                InstantiateObjectsToPool(_enemySpawnStates[i], _enemySpawnStates[i].SpawnCount);
             }
         }
     }
 
-    protected override void AddListeners(Enemy enemy)
+    protected override void AddListeners(EnemyType enemy)
     {
         enemy.OnDied += AddEnemyToPool;
         enemy.Destroyed += RemoveListeners;
@@ -101,36 +98,15 @@ public abstract class EnemySpawner<T> : Spawner<Enemy> where T : Enemy
     }
     protected override void RemoveListeners(IDestroyable destroyable)
     {
-        Enemy enemy = destroyable as Enemy;
+        EnemyType enemy = destroyable as EnemyType;
         enemy.OnDied -= AddEnemyToPool;
         enemy.Destroyed -= RemoveListeners;
     }
 
-    protected void AddEnemyToPool(Enemy enemy)
+    protected void AddEnemyToPool(Enemy<Data> enemy)
     {
-        _pool.Put(enemy);
-    }
-    protected void InstantiateObjectsToPool(EnemySpawnState enemySpawnState)
-    {
-        for (int i = 0; i < enemySpawnState.SpawnCount; i++)
-        {
-            if (_usingMaxCountEnemyInPool)
-            {
-                if (_pool.CountObjectInPool > _maxEnemyCountInPool)
-                {
-                    while (_pool.CountObjectInPool > _maxEnemyCountInPool)
-                        Destroy(_pool.Get().gameObject);
-                }
-                else if (_pool.CountObjectInPool == _maxEnemyCountInPool)
-                {
-                    return;
-                }
-            }
-
-            Enemy enemy = Instantiate(_enemyPrefab);
-            enemy.Init(_playerMoving, enemySpawnState.MovingPoints, true);
-            _pool.Put(enemy);
-        };
+        EnemyType putEnemy = enemy as EnemyType;
+        _pool.Put(putEnemy);
     }
     protected void InstantiateObjectsToPool(EnemySpawnState enemySpawnState, int instantiateCount)
     {
@@ -149,11 +125,12 @@ public abstract class EnemySpawner<T> : Spawner<Enemy> where T : Enemy
                 }
             }
 
-            Enemy enemy = Instantiate(_enemyPrefab);
+            EnemyType enemy = Instantiate(_enemyPrefab);
             enemy.Init(_playerMoving, enemySpawnState.MovingPoints, true);
             _pool.Put(enemy);
         };
     }
+
     [SerializeField, Button("Instantiate enemy with random states to pool")]
     protected void InstantiateObjectsToPoolWithRandomStates()
     {
@@ -174,44 +151,49 @@ public abstract class EnemySpawner<T> : Spawner<Enemy> where T : Enemy
                 }
             }
 
-            Enemy enemy = Instantiate(_enemyPrefab);
+            EnemyType enemy = Instantiate(_enemyPrefab);
             enemy.Init(_playerMoving, enemySpawnState.MovingPoints, true);
             _pool.Put(enemy);
         };
     }
 
-    public Enemy Spawn(EnemySpawnState enemySpawnState)
+    public EnemyType Spawn(EnemySpawnState enemySpawnState)
     {
         if (_pool == null)
-            _pool = new ObjectPool<Enemy>(ContainerForEnemyInPool, _enemyPrefab);
+            _pool = new ObjectPool<EnemyType>(ContainerForEnemyInPool, _enemyPrefab);
 
         if (_pool.CountObjectInPool == 0 && _addEnemyToPoolIfPoolIsEmpty)
             InstantiateObjectsToPool(enemySpawnState, _addEnemyToPoolCountIfPoolIsEmpty);
 
-        Enemy enemy = _pool.Get(out bool isInstantiated);
+        EnemyType enemy = _pool.Get(out bool isInstantiated);
         enemy.transform.SetParent(null);
         enemy.transform.position = enemySpawnState.SpawnPoints[Random.Range(0, enemySpawnState.SpawnPoints.Length)].position;
+
         enemy.Init(_playerMoving, enemySpawnState.MovingPoints, isInstantiated);
+
         AddListeners(enemy);
 
         return enemy;
     }
 
+
     [Button("Spawn an enemy with random spawn parameters")]
-    public override Enemy Spawn()
+    public override EnemyType Spawn()
     {
         EnemySpawnState enemySpawnState = _enemySpawnStates[Random.Range(0, _enemySpawnStates.Count)];
 
         if (_pool == null)
-            _pool = new ObjectPool<Enemy>(ContainerForEnemyInPool, _enemyPrefab);
+            _pool = new ObjectPool<EnemyType>(ContainerForEnemyInPool, _enemyPrefab);
 
         if (_pool.CountObjectInPool == 0 && _addEnemyToPoolIfPoolIsEmpty)
             InstantiateObjectsToPool(enemySpawnState, _addEnemyToPoolCountIfPoolIsEmpty);
 
-        Enemy enemy = _pool.Get(out bool isInstantiated);
+        EnemyType enemy = _pool.Get(out bool isInstantiated);
         enemy.transform.SetParent(null);
         enemy.transform.position = enemySpawnState.SpawnPoints[Random.Range(0, enemySpawnState.SpawnPoints.Length)].position;
-        //enemy.Init(_playerMoving, enemySpawnState.MovingPoints, isInstantiated);
+
+        enemy.Init(_playerMoving, enemySpawnState.MovingPoints, isInstantiated);
+
         AddListeners(enemy);
 
         return enemy;

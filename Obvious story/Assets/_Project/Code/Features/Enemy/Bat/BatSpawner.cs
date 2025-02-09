@@ -1,4 +1,6 @@
-public class BatSpawner : EnemySpawner<Bat>
+using UnityEngine;
+
+public class BatSpawner : EnemySpawner<BatData, Bat>
 {
 
 }

@@ -17,13 +17,13 @@ public class BatAngry : StateMachineBehaviour
         _bat.FlipEnemyToTarget(_targetObject);
         _bat.Move(_targetObject);
 
-        if (_bat.RaycastToPlayer(_bat.AngryDistance) == false)
-            animator.SetBool(_bat.IsAngry, false);
+        if (_bat.RaycastToPlayer(_bat.EnemyData.AngryDistance) == false)
+            animator.SetBool(_bat.EnemyData.IsAngry, false);
 
         else
         {
-            if (_bat.RaycastToPlayer(_bat.AttackDistance))
-                animator.SetBool(_bat.IsAttack, true);
+            if (_bat.RaycastToPlayer(_bat.EnemyData.AttackDistance))
+                animator.SetBool(_bat.EnemyData.IsAttack, true);
         }
     }
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

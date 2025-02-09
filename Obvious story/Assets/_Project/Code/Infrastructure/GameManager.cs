@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using System;
-using System.Collections.Generic;
-using UnityEditor.SearchService;
+using Zenject;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,17 +15,17 @@ public class GameManager : MonoBehaviour
     [ShowIf(nameof(_usingDelayBeforeStartLoadingLevel))]
     [SerializeField, Min(0)] private float _timeSpreadForLoadLevel = 0;
 
-    [Space]
-    [SerializeField] private List<string> _levelNames;
+    [Inject] private GameSettings _gameSettings;
 
     private int _currentLevel = 0;
 
     private static GameManager _instance;
 
-    [HideInInspector] public UnityEvent OnPlay, OnRestart, OnGameOver, RestartSceneLoaoded, OnGameOpen,
-        OnPlayerFinishEnter, OnPlayerFinishExit, OnLoadScene;
+    [HideInInspector]
+    public UnityEvent OnPlay, OnRestart, OnGameOver, RestartSceneLoaoded, OnGameOpen,
+        OnPlayerFinishEnter, OnPlayerFinishExit, OnLoadScene, OnGamePause;
 
-    [HideInInspector] public UnityEvent<UnityEngine.SceneManagement.Scene> OnSceneLoaoded;
+    [HideInInspector] public UnityEvent<Scene> OnSceneLoaoded;
 
     private float DelayBeforeTheSceneStartLoading
     {
@@ -63,7 +62,8 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
-    public static bool IsFirstGameOpen { get; private set; } = true;
+    public bool IsFirstGameOpen { get; private set; } = true;
+
     public bool IsGameStarting { get; private set; } = false;
 
     private void Awake()
@@ -78,8 +78,8 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
 
-        if (_levelNames.Count == 0)
-            throw new ArgumentNullException($"{nameof(_levelNames)} is empty");
+        if (_gameSettings.LevelNames.Length == 0)
+            throw new ArgumentNullException($"{nameof(_gameSettings.LevelNames)} is empty");
 
         IsFirstGameOpen = true;
         AddListenersOnFirstGameOpen();
@@ -92,27 +92,41 @@ public class GameManager : MonoBehaviour
     {
         AddListeners();
 
-        OnSceneLoaoded.AddListener(((scene) =>
+        OnSceneLoaoded.AddListener((scene) =>
         {
             AddListeners();
 
-            if (SceneManager.GetActiveScene().name == scene.name)
+            if (IsFirstGameOpen == false && SceneManager.GetActiveScene().name == scene.name)
             {
                 RestartSceneLoaoded?.Invoke();
                 IsGameStarting = true;
             }
-        }));
+        });
     }
     private void AddListeners()
     {
         UIManager.Instance.ButtonPlayClick.AddListener(Play);
         UIManager.Instance.ButtonRestartClick.AddListener(Restart);
         UIManager.Instance.ButtonNextLevelClick.AddListener(NextLevel);
+        UIManager.Instance.ButtonPauseClick.AddListener(() =>
+        {
+            IsGameStarting = false;
+            OnGamePause?.Invoke();
+        });
+        UIManager.Instance.ButtonContinueClick.AddListener(() => { IsGameStarting = true; });
+        UIManager.Instance.MenuButtonClick.AddListener(() =>
+        {
+            _currentLevel = 0;
+            IsGameStarting = false;
+            IsFirstGameOpen = true;
+            LoadScene(_gameSettings.LevelNames[_currentLevel], DelayBeforeTheSceneStartLoading);
+        });
 
-        FindAnyObjectByType<PlayerHealthManager>().PlayerDied.AddListener((() =>
+        FindAnyObjectByType<PlayerHealthManager>().PlayerDied.AddListener(() =>
         {
             OnGameOver?.Invoke();
-        }));
+            IsGameStarting = false;
+        });
 
         AddListenersToFinishTrigger();
     }
@@ -121,20 +135,14 @@ public class GameManager : MonoBehaviour
         FinishInLevelTrigger finishInLevelTrigger = FindAnyObjectByType<FinishInLevelTrigger>();
         if (finishInLevelTrigger != null)
         {
-            finishInLevelTrigger.OnPlayerFinishTriggerEnter.AddListener((() =>
+            finishInLevelTrigger.OnPlayerFinishTriggerEnter.AddListener(() =>
             {
                 OnPlayerFinishEnter?.Invoke();
-                //Debug.Log("On player finish enter");
-            }));
-            finishInLevelTrigger.OnPlayerFinishTriggerExit.AddListener((() =>
+            });
+            finishInLevelTrigger.OnPlayerFinishTriggerExit.AddListener(() =>
             {
                 OnPlayerFinishExit?.Invoke();
-                //Debug.Log("On player finish exit");
-            }));
-        }
-        else
-        {
-            //Debug.Log("Null");
+            });
         }
     }
     private void Play()
@@ -144,21 +152,20 @@ public class GameManager : MonoBehaviour
     }
     private void Restart()
     {
-        OnRestart?.Invoke();
         IsGameStarting = false;
         IsFirstGameOpen = false;
+        OnRestart?.Invoke();
         LoadScene(SceneManager.GetActiveScene().name, DelayBeforeTheSceneStartLoading);
     }
     private void NextLevel()
     {
+        IsFirstGameOpen = false;
         _currentLevel++;
 
-        if (_currentLevel + 1 > _levelNames.Count)
-        {
-            throw new ArgumentOutOfRangeException($"{nameof(_levelNames)} out of tolerance");
-        }
+        if (_currentLevel + 1 > _gameSettings.LevelNames.Length)
+            throw new ArgumentOutOfRangeException($"{nameof(_gameSettings.LevelNames)} out of tolerance");
 
-        LoadScene(_levelNames[_currentLevel], DelayBeforeTheSceneStartLoading);
+        LoadScene(_gameSettings.LevelNames[_currentLevel], DelayBeforeTheSceneStartLoading);
     }
     private void LoadScene(string sceneName, float delayToLoadScene)
     {

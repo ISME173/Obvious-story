@@ -5,7 +5,7 @@ public class MobileInput : IUserInput
 {
     private Joystick _joystick;
 
-    public MobileInput(Joystick joystick, Button playerAttackButton)
+    public MobileInput(Joystick joystick, Button playerAttackButton, Button pauseButton)
     {
         _joystick = joystick;
         joystick.PlayerJumpVerticalState += () => 
@@ -13,14 +13,18 @@ public class MobileInput : IUserInput
             OnPlayerJumpButtonDown?.Invoke();
         };
 
-        playerAttackButton.onClick.AddListener((() => 
+        playerAttackButton.onClick.AddListener(() => 
         {
             OnPlayerAttackActivate?.Invoke();
-        }));
+        });
+
+        pauseButton.onClick.AddListener(() =>
+        {
+            OnPauseActivate?.Invoke();
+        });
     }
 
-    public event Action OnPlayerJumpButtonDown;
-    public event Action OnPlayerAttackActivate;
+    public event Action OnPlayerJumpButtonDown, OnPlayerAttackActivate, OnPauseActivate;
 
     public float GetPlayerMovingHorizontalInput(float speed)
     {

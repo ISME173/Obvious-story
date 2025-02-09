@@ -6,8 +6,8 @@ public class MushroomAttack : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         _mushroom = animator.GetComponent<Mushroom>();
-        animator.SetBool(_mushroom.IsAttack, true);
-        _mushroom.SetMovingSpeedToZero();
+        animator.SetBool(_mushroom.EnemyData.IsAttack, true);
+        _mushroom.StopEnemyInIsIdleState();
     }
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -15,6 +15,6 @@ public class MushroomAttack : StateMachineBehaviour
     }
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool(_mushroom.IsAttack, false);
+        animator.SetBool(_mushroom.EnemyData.IsAttack, false);
     }
 }

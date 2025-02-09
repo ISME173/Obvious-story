@@ -11,9 +11,9 @@ public class BatAttack : StateMachineBehaviour
     {
         _bat.FlipEnemyToTarget(_bat.GetPlayerTargetPoint());
 
-        if (_bat.RaycastToPlayer(_bat.AttackDistance) == false)
-            animator.SetBool(_bat.IsAttack, false);
+        if (_bat.RaycastToPlayer(_bat.EnemyData.AttackDistance) == false)
+            animator.SetBool(_bat.EnemyData.IsAttack, false);
         else
-            animator.SetTrigger("AttackTrigger" + Random.Range(1, _bat.AttackVariantsCount + 1));
+            animator.SetTrigger("AttackTrigger" + Random.Range(1, _bat.EnemyData.AttackVariantsCount + 1));
     }
 }
