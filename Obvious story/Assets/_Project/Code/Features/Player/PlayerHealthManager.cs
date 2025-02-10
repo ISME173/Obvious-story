@@ -19,8 +19,9 @@ public class PlayerHealthManager : MonoBehaviour, IDamagable
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
-            Healing(1);
+        // Код для восстановления здоровья. Создан для более легкого тестирования. При необходимости, можно интегрировать в игру.
+        /*if (Input.GetKeyDown(KeyCode.F))
+            Healing(1); */
     }
     private void Died()
     {

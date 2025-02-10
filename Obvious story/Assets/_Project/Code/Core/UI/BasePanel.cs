@@ -5,8 +5,8 @@ using UnityEngine;
 public abstract class BasePanel : MonoBehaviour
 {
     [Header("Animator states")]
-    [SerializeField] protected string _disableTrigger = "Enable";
-    [SerializeField] protected string _enableParameter = "Disable";
+    [SerializeField] protected string _disableTrigger = "Disable";
+    [SerializeField] protected string _enableParameter = "Enable";
 
     [Header("Animation states"), Space]
     [SerializeField, Min(0)] private float _enableAnimTime;

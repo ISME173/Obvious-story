@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private FinishPanel _finishPanel;
     [SerializeField] private SettingsPanel _settingsPanel;
     [SerializeField] private PausePanel _pausePanel;
+    [SerializeField] private VictoryPanel _victoryPanel;
 
     [Header("States for panels"), Space]
     [SerializeField, Min(0)] private float _timeToActivateRestartPanelBeforePlayerDied = 1.5f;
@@ -22,6 +23,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _pauseButton;
 
     [Inject] private IUserInput _userInput;
+    private MobileInput _mobileInput;
 
     private static UIManager _instance;
 
@@ -59,11 +61,18 @@ public class UIManager : MonoBehaviour
         else
             _instance = this;
 
+        if (_userInput.GetDeviceType() == IUserInput.DeviceType.Handler)
+            _mobileInput = _userInput as MobileInput;
+
         AddAllListeners();
     }
     private void OpenSettings()
     {
         SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick);
+
+        if (_userInput.GetDeviceType() == IUserInput.DeviceType.Handler)
+            _mobileInput.UISetActiveFalse();
+
         _settingsPanel.Enable();
     }
     private void CloseSettings()
@@ -81,14 +90,22 @@ public class UIManager : MonoBehaviour
     private void OpenMenu()
     {
         SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick);
+
+        if (_userInput.GetDeviceType() == IUserInput.DeviceType.Handler)
+            _mobileInput.UISetActiveFalse();
+
         MenuButtonClick?.Invoke();
     }
     private void PauseActivate()
     {
-        if (_pausePanel.IsEnable)
+        if (_pausePanel.IsEnable && GameManager.Instance.IsGameStarting)
             return;
 
         SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick);
+
+        if (_userInput.GetDeviceType() == IUserInput.DeviceType.Handler)
+            _mobileInput.UISetActiveFalse();
+
         ButtonPauseClick?.Invoke();
         _pausePanel.Enable();
     }
@@ -96,6 +113,10 @@ public class UIManager : MonoBehaviour
     {
         SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick);
         _finishPanel.Disable();
+    }
+    private void ExitGame()
+    {
+        Application.Quit();
     }
     private void AddAllListeners()
     {
@@ -108,12 +129,15 @@ public class UIManager : MonoBehaviour
             _startPanel.Disable();
         });
         _startPanel.Settings.onClick.AddListener(OpenSettings);
+        _startPanel.ExitGame.onClick.AddListener(ExitGame);
 
         _restartPanel.RestartButton.onClick.AddListener(RestartButtonClick);
         _restartPanel.SettingsButton.onClick.AddListener(OpenSettings);
         _restartPanel.MenuButton.onClick.AddListener(OpenMenu);
 
         _settingsPanel.ExitSettings.onClick.AddListener(CloseSettings);
+
+        _victoryPanel.MenuButton.onClick.AddListener(OpenMenu);
 
         _pausePanel.MenuButton.onClick.AddListener(OpenMenu);
         _pauseButton.onClick.AddListener(PauseActivate);
@@ -122,6 +146,11 @@ public class UIManager : MonoBehaviour
         {
             if (_pausePanel.IsEnable == false)
                 return;
+
+            SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick);
+
+            if (_userInput.GetDeviceType() == IUserInput.DeviceType.Handler)
+                _mobileInput.UISetActiveTrue();
 
             ButtonContinueClick?.Invoke();
             _pausePanel.Disable();
@@ -137,13 +166,32 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnSceneLoaoded.AddListener((scene) =>
         {
             if (GameManager.Instance.IsFirstGameOpen)
+            {
                 _startPanel.Enable();
+
+                if (_userInput.GetDeviceType() == IUserInput.DeviceType.Handler)
+                    _mobileInput.UISetActiveFalse();
+            }
+            else
+            {
+                if (_userInput.GetDeviceType() == IUserInput.DeviceType.Handler)
+                    _mobileInput.UISetActiveTrue();
+            }
         });
 
         GameManager.Instance.OnGameOpen.AddListener(() =>
         {
+            if (_userInput.GetDeviceType() == IUserInput.DeviceType.Handler)
+                _mobileInput.UISetActiveFalse();
+
             if (GameManager.Instance.IsFirstGameOpen)
                 _startPanel.Enable();
+        });
+
+        GameManager.Instance.OnPlay.AddListener(() =>
+        {
+            if (_userInput.GetDeviceType() == IUserInput.DeviceType.Handler)
+                _mobileInput.UISetActiveTrue();
         });
 
         GameManager.Instance.OnPlayerFinishExit.AddListener(() =>
@@ -159,6 +207,11 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnPlayerFinishEnter.AddListener(() => { _finishPanel.Enable(); });
 
         GameManager.Instance.OnLoadScene.AddListener(() => { _loadingPanel.Activate(); });
+        GameManager.Instance.OnVictory.AddListener(() =>
+        {
+            _victoryPanel.Enable();
+            _finishPanel.Disable();
+        });
     }
     private IEnumerator TimerToMethod(float time, Action action)
     {

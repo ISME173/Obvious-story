@@ -26,6 +26,11 @@ public class DesktopInput : MonoBehaviour, IUserInput
         }
     }
 
+    public IUserInput.DeviceType GetDeviceType()
+    {
+        return IUserInput.DeviceType.Desktop;
+    }
+
     public float GetPlayerMovingHorizontalInput(float speed)
     {
         return Input.GetAxis("Horizontal") * speed;

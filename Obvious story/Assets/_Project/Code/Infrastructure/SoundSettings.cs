@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "SoundSettings", menuName = "ScriptableObject/SoundSettings")]
 public class SoundSettings : ScriptableObject
 {
-    [Header("Game sound settings")]
+    [Header("Sound saving states")]
     [SerializeField] private string _soundSavingParameterName;
     [SerializeField] private string _musicSavingParameterName;
     [Space]

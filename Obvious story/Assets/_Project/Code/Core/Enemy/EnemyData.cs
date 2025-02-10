@@ -44,7 +44,7 @@ public abstract class EnemyData : ScriptableObject
     [Space]
     [SerializeField] private string _diedTrigger;
     [SerializeField] private string _attackTrigger;
-    [SerializeField] private string _takeDamageTrigger;
+    [SerializeField] private string _takeDamageTrigger;  
 
     public int AttackDamage => _attackDamage;
     public int MaxHeartsCount => _maxHeartsCount;

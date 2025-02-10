@@ -15,15 +15,15 @@ public class GameManager : MonoBehaviour
     [ShowIf(nameof(_usingDelayBeforeStartLoadingLevel))]
     [SerializeField, Min(0)] private float _timeSpreadForLoadLevel = 0;
 
-    [Inject] private GameSettings _gameSettings;
-
-    private int _currentLevel = 0;
-
     private static GameManager _instance;
+
+    [Inject] private GameSettings _gameSettings;
+    [Inject] private PlayerHealthManager _playerHealthManager;
+    private int _currentLevel = 0;
 
     [HideInInspector]
     public UnityEvent OnPlay, OnRestart, OnGameOver, RestartSceneLoaoded, OnGameOpen,
-        OnPlayerFinishEnter, OnPlayerFinishExit, OnLoadScene, OnGamePause;
+        OnPlayerFinishEnter, OnPlayerFinishExit, OnLoadScene, OnGamePause, OnVictory;
 
     [HideInInspector] public UnityEvent<Scene> OnSceneLoaoded;
 
@@ -122,7 +122,10 @@ public class GameManager : MonoBehaviour
             LoadScene(_gameSettings.LevelNames[_currentLevel], DelayBeforeTheSceneStartLoading);
         });
 
-        FindAnyObjectByType<PlayerHealthManager>().PlayerDied.AddListener(() =>
+        if (_playerHealthManager == null)
+            _playerHealthManager = FindAnyObjectByType<PlayerHealthManager>();
+
+        _playerHealthManager.PlayerDied.AddListener(() =>
         {
             OnGameOver?.Invoke();
             IsGameStarting = false;
@@ -157,13 +160,21 @@ public class GameManager : MonoBehaviour
         OnRestart?.Invoke();
         LoadScene(SceneManager.GetActiveScene().name, DelayBeforeTheSceneStartLoading);
     }
+    private void Victory()
+    {
+        IsGameStarting = false;
+        OnVictory?.Invoke();
+    }
     private void NextLevel()
     {
         IsFirstGameOpen = false;
         _currentLevel++;
 
         if (_currentLevel + 1 > _gameSettings.LevelNames.Length)
-            throw new ArgumentOutOfRangeException($"{nameof(_gameSettings.LevelNames)} out of tolerance");
+        {
+            Victory();
+            return;
+        }
 
         LoadScene(_gameSettings.LevelNames[_currentLevel], DelayBeforeTheSceneStartLoading);
     }

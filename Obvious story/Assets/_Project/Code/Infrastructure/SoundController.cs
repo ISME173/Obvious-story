@@ -172,6 +172,19 @@ public class SoundController : MonoBehaviour
         audioSourceToAdd.volume = _soundSettings.MusicVolume;
         _musicAudioSources.Add(audioSourceToAdd);
 
-       // Debug.Log($"Add {audioSourceToAdd} to dictionary");
+        // Debug.Log($"Add {audioSourceToAdd} to dictionary");
+    }
+
+    public bool CheckAudioSourceInPlayerAudioSources(AudioSource audioSource)
+    {
+        return _playerAudioSources.Any(x => x.Value == audioSource);
+    }
+    public bool CheckAudioSourceInBackgroundMusicAudioSources(AudioSource audioSource)
+    {
+        return _uIAudioSources.Any(x => x.Value == audioSource);
+    }
+    public bool CheckAudioSourceInUIAudioSources(AudioSource audioSource)
+    {
+        return _backgroundMusicSources.Any(x => x.Value == audioSource);
     }
 }

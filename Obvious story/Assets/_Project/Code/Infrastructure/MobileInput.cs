@@ -4,21 +4,25 @@ using UnityEngine.UI;
 public class MobileInput : IUserInput
 {
     private Joystick _joystick;
+    private Button _playerAttackButton, _pauseButton;
 
     public MobileInput(Joystick joystick, Button playerAttackButton, Button pauseButton)
     {
         _joystick = joystick;
-        joystick.PlayerJumpVerticalState += () => 
+        _playerAttackButton = playerAttackButton;
+        _pauseButton = pauseButton;
+
+        _joystick.PlayerJumpVerticalState += () => 
         {
             OnPlayerJumpButtonDown?.Invoke();
         };
 
-        playerAttackButton.onClick.AddListener(() => 
+        _playerAttackButton.onClick.AddListener(() => 
         {
             OnPlayerAttackActivate?.Invoke();
         });
 
-        pauseButton.onClick.AddListener(() =>
+        _pauseButton.onClick.AddListener(() =>
         {
             OnPauseActivate?.Invoke();
         });
@@ -29,5 +33,21 @@ public class MobileInput : IUserInput
     public float GetPlayerMovingHorizontalInput(float speed)
     {
         return _joystick.Horizontal * speed;
+    }
+    public IUserInput.DeviceType GetDeviceType()
+    {
+        return IUserInput.DeviceType.Handler;
+    }
+    public void UISetActiveFalse()
+    {
+        _joystick.gameObject.SetActive(false);
+        _pauseButton.gameObject.SetActive(false);
+        _playerAttackButton?.gameObject.SetActive(false);
+    }
+    public void UISetActiveTrue()
+    {
+        _joystick.gameObject.SetActive(true);
+        _pauseButton.gameObject.SetActive(true);
+        _playerAttackButton.gameObject.SetActive(true);
     }
 }
