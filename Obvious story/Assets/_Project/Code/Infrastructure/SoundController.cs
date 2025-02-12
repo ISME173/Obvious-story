@@ -8,7 +8,9 @@ using static BackgroundMusic;
 
 public class SoundController : MonoBehaviour
 {
-    [Inject] private SoundSettings _soundSettings;
+    [SerializeField] private SoundSettings _soundSettings;
+
+    private static SoundController _instance;
 
     private List<AudioSource> _soundAudioSources = new();
     private List<AudioSource> _musicAudioSources = new();
@@ -17,7 +19,34 @@ public class SoundController : MonoBehaviour
     private Dictionary<UISoundTypes, AudioSource> _uIAudioSources = new();
     private Dictionary<BackgroundMusicTypes, AudioSource> _backgroundMusicSources = new();
 
-    private void Awake() =>  AddListeners();
+    public static SoundController Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindAnyObjectByType<SoundController>();
+
+                if (_instance == null)
+                {
+                    GameObject instance = new GameObject();
+                    _instance = instance.AddComponent<SoundController>();
+                    _instance.gameObject.name = typeof(SoundController).ToString();
+                }
+            }
+            return _instance;
+        }
+    }
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+            Destroy(gameObject);
+        else
+            _instance = this;
+
+        AddListeners();
+    }
     private void Start()
     {
         _soundSettings.SetSoundSlider(UIPanelsEvents.Instance.UIPanels.SoundSlider);
@@ -44,11 +73,11 @@ public class SoundController : MonoBehaviour
         });
     }
 
-    private void PlayAnySoundInAnyAudioSource(AudioSource audioSource, AudioClip audioClip, bool playOneShot, bool ToPlayEvenIfThePreviousOneIsStillPlaying, float pitch = 1)
+    private void PlayAnySoundInAnyAudioSource(AudioSource audioSource, AudioClip audioClip, bool playOneShot, bool toPlayEvenIfThePreviousOneIsStillPlaying, float pitch = 1)
     {
         audioSource.pitch = pitch;
 
-        if (ToPlayEvenIfThePreviousOneIsStillPlaying)
+        if (toPlayEvenIfThePreviousOneIsStillPlaying)
         {
             if (playOneShot)
             {
@@ -77,39 +106,39 @@ public class SoundController : MonoBehaviour
         }
     }
 
-    public void PlayPlayerSound(PlayerAudioClipTypes PlayerAudioClipType, bool playOneShot = true, bool ToPlayEvenIfThePreviousOneIsStillPlaying = true, float pitch = 1)
+    public void PlayPlayerSound(PlayerAudioClipTypes playerAudioClipType, bool playOneShot = true, bool toPlayEvenIfThePreviousOneIsStillPlaying = true, float pitch = 1)
     {
-        PlayerAudioClip PlayerAudioClip = _soundSettings.PlayerSounds.FirstOrDefault(x => x.PlayerAudioClipType == PlayerAudioClipType);
-        if (PlayerAudioClipType == PlayerAudioClip.PlayerAudioClipType && _playerAudioSources.TryGetValue(PlayerAudioClipType, out AudioSource audioSource))
+        PlayerAudioClip PlayerAudioClip = _soundSettings.PlayerSounds.FirstOrDefault(x => x.PlayerAudioClipType == playerAudioClipType);
+        if (playerAudioClipType == PlayerAudioClip.PlayerAudioClipType && _playerAudioSources.TryGetValue(playerAudioClipType, out AudioSource audioSource))
         {
-            PlayAnySoundInAnyAudioSource(audioSource, PlayerAudioClip.AudioClip, playOneShot, ToPlayEvenIfThePreviousOneIsStillPlaying, pitch);
+            PlayAnySoundInAnyAudioSource(audioSource, PlayerAudioClip.AudioClip, playOneShot, toPlayEvenIfThePreviousOneIsStillPlaying, pitch);
         }
     }
 
-    public void PlayUISound(UISoundTypes soundType, bool playOneShot = true, bool ToPlayEvenIfThePreviousOneIsStillPlaying = true, float pitch = 1)
+    public void PlayUISound(UISoundTypes soundType, bool playOneShot = true, bool toPlayEvenIfThePreviousOneIsStillPlaying = true, float pitch = 1)
     {
         SoundUI uISound = _soundSettings.SoundsUI.FirstOrDefault(x => x.UISoundType == soundType);
         if (soundType == uISound.UISoundType && _uIAudioSources.TryGetValue(soundType, out AudioSource audioSource))
         {
-            PlayAnySoundInAnyAudioSource(audioSource, uISound.AudioClip, playOneShot, ToPlayEvenIfThePreviousOneIsStillPlaying, pitch);
+            PlayAnySoundInAnyAudioSource(audioSource, uISound.AudioClip, playOneShot, toPlayEvenIfThePreviousOneIsStillPlaying, pitch);
         }
     }
 
-    public void PlayBackgroundMusic(BackgroundMusicTypes backgroundMusicTypeToPlay, bool playOneShot = true, bool ToPlayEvenIfThePreviousOneIsStillPlaying = true, float pitch = 1)
+    public void PlayBackgroundMusic(BackgroundMusicTypes backgroundMusicTypeToPlay, bool playOneShot = true, bool toPlayEvenIfThePreviousOneIsStillPlaying = true, float pitch = 1)
     {
         BackgroundMusic backgroundMusic = _soundSettings.BackgroundMusics.FirstOrDefault(x => x.BackgroundMusicType == backgroundMusicTypeToPlay);
         if (backgroundMusicTypeToPlay == backgroundMusic.BackgroundMusicType && _backgroundMusicSources.TryGetValue(backgroundMusicTypeToPlay, out AudioSource audioSource))
         {
-            PlayAnySoundInAnyAudioSource(audioSource, backgroundMusic.AudioClip, playOneShot, ToPlayEvenIfThePreviousOneIsStillPlaying, pitch);
+            PlayAnySoundInAnyAudioSource(audioSource, backgroundMusic.AudioClip, playOneShot, toPlayEvenIfThePreviousOneIsStillPlaying, pitch);
         }
     }
 
-    public void AddPlayerSoundAudioSourceToDictionary(AudioSource audioSourceToAdd, PlayerAudioClipTypes PlayerAudioClipType)
+    public void AddPlayerSoundAudioSourceToDictionary(AudioSource audioSourceToAdd, PlayerAudioClipTypes playerAudioClipType)
     {
-        if (_playerAudioSources.TryGetValue(PlayerAudioClipType, out AudioSource audioSource))
+        if (_playerAudioSources.TryGetValue(playerAudioClipType, out AudioSource audioSource))
             return;
 
-        _playerAudioSources.Add(PlayerAudioClipType, audioSourceToAdd);
+        _playerAudioSources.Add(playerAudioClipType, audioSourceToAdd);
 
         audioSourceToAdd.volume = _soundSettings.SoundVolume;
         _soundAudioSources.Add(audioSourceToAdd);

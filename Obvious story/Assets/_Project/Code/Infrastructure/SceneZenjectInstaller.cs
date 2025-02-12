@@ -30,7 +30,7 @@ public class SceneZenjectInstaller : MonoInstaller
                 break;
         }
 
-        Container.Bind<PlayerMoving>().FromInstance(_playerMoving);
+        Container.Bind<PlayerMoving>().FromInstance(_playerMoving).NonLazy();
         Container.Bind<PlayerHealthManager>().FromInstance(_playerHealthManager);
     }
     private void StatesInDecktopInput()
