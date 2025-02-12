@@ -2,59 +2,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Zenject;
-using static PlayerSound;
+using static PlayerAudioClip;
 using static SoundUI;
 using static BackgroundMusic;
 
 public class SoundController : MonoBehaviour
 {
-    [SerializeField] private BackgroundMusicTypes _backgroundMusicType;
-
     [Inject] private SoundSettings _soundSettings;
-
-    private static SoundController _instance;
 
     private List<AudioSource> _soundAudioSources = new();
     private List<AudioSource> _musicAudioSources = new();
 
-    private Dictionary<PlayerSoundTypes, AudioSource> _playerAudioSources = new();
+    private Dictionary<PlayerAudioClipTypes, AudioSource> _playerAudioSources = new();
     private Dictionary<UISoundTypes, AudioSource> _uIAudioSources = new();
     private Dictionary<BackgroundMusicTypes, AudioSource> _backgroundMusicSources = new();
 
-    public static SoundController Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindAnyObjectByType<SoundController>();
-
-                if (_instance == null)
-                {
-                    GameObject instance = new GameObject();
-                    _instance = instance.AddComponent<SoundController>();
-                    _instance.name = typeof(SoundController).Name;
-                }
-            }
-            return _instance;
-        }
-    }
-
-    private void Awake()
-    {
-        if (_instance != null && _instance != this)
-            Destroy(gameObject);
-        else
-            _instance = this;
-
-        AddListeners();
-    }
+    private void Awake() =>  AddListeners();
     private void Start()
     {
-        _soundSettings.SetSoundSlider(UIManager.Instance.SoundSlider);
-        _soundSettings.SetMusicSlider(UIManager.Instance.MusicSlider);
-
-        PlayBackgroundMusic(_backgroundMusicType);
+        _soundSettings.SetSoundSlider(UIPanelsEvents.Instance.UIPanels.SoundSlider);
+        _soundSettings.SetMusicSlider(UIPanelsEvents.Instance.UIPanels.MusicSlider);
     }
     private void AddListeners()
     {
@@ -110,12 +77,12 @@ public class SoundController : MonoBehaviour
         }
     }
 
-    public void PlayPlayerSound(PlayerSoundTypes playerSoundType, bool playOneShot = true, bool ToPlayEvenIfThePreviousOneIsStillPlaying = true, float pitch = 1)
+    public void PlayPlayerSound(PlayerAudioClipTypes PlayerAudioClipType, bool playOneShot = true, bool ToPlayEvenIfThePreviousOneIsStillPlaying = true, float pitch = 1)
     {
-        PlayerSound playerSound = _soundSettings.PlayerSounds.FirstOrDefault(x => x.PlayerSoundType == playerSoundType);
-        if (playerSoundType == playerSound.PlayerSoundType && _playerAudioSources.TryGetValue(playerSoundType, out AudioSource audioSource))
+        PlayerAudioClip PlayerAudioClip = _soundSettings.PlayerSounds.FirstOrDefault(x => x.PlayerAudioClipType == PlayerAudioClipType);
+        if (PlayerAudioClipType == PlayerAudioClip.PlayerAudioClipType && _playerAudioSources.TryGetValue(PlayerAudioClipType, out AudioSource audioSource))
         {
-            PlayAnySoundInAnyAudioSource(audioSource, playerSound.AudioClip, playOneShot, ToPlayEvenIfThePreviousOneIsStillPlaying, pitch);
+            PlayAnySoundInAnyAudioSource(audioSource, PlayerAudioClip.AudioClip, playOneShot, ToPlayEvenIfThePreviousOneIsStillPlaying, pitch);
         }
     }
 
@@ -137,12 +104,12 @@ public class SoundController : MonoBehaviour
         }
     }
 
-    public void AddPlayerSoundAudioSourceToDictionary(AudioSource audioSourceToAdd, PlayerSoundTypes playerSoundType)
+    public void AddPlayerSoundAudioSourceToDictionary(AudioSource audioSourceToAdd, PlayerAudioClipTypes PlayerAudioClipType)
     {
-        if (_playerAudioSources.TryGetValue(playerSoundType, out AudioSource audioSource))
+        if (_playerAudioSources.TryGetValue(PlayerAudioClipType, out AudioSource audioSource))
             return;
 
-        _playerAudioSources.Add(playerSoundType, audioSourceToAdd);
+        _playerAudioSources.Add(PlayerAudioClipType, audioSourceToAdd);
 
         audioSourceToAdd.volume = _soundSettings.SoundVolume;
         _soundAudioSources.Add(audioSourceToAdd);

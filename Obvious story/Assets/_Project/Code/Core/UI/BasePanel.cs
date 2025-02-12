@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -37,10 +38,23 @@ public abstract class BasePanel : MonoBehaviour
         _animator.SetTrigger(_disableTrigger);
         IsEnable = false;
     }
+    public void Disable(float timeToAction, Action action)
+    {
+        gameObject.SetActive(true);
+        _animator.SetTrigger(_disableTrigger);
+        IsEnable = false;
+
+        StartCoroutine(TimeToAction(timeToAction, action));
+    }
     public virtual void Enable()
     {
         gameObject.SetActive(true);
         _animator.SetTrigger(_enableParameter);
         IsEnable = true;
+    }
+    protected IEnumerator TimeToAction(float time, Action action)
+    {
+        yield return new WaitForSeconds(time);
+        action();
     }
 }

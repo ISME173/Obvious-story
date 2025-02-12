@@ -31,8 +31,8 @@ public abstract class Enemy<T> : EnemyBase where T : EnemyData
     {
         if (_enemyData.UsingVariationForStates)
         {
-            IdleTime = RandomExtensions.RangeWithDeviation(_enemyData.IdleTime, _enemyData.VariationForStates);
-            RunningTime = RandomExtensions.RangeWithDeviation(_enemyData.RunningTime, _enemyData.VariationForStates);
+            IdleTime = _enemyData.IdleTime.WithDeviation(_enemyData.VariationForStates);
+            RunningTime = _enemyData.RunningTime.WithDeviation(_enemyData.VariationForStates);
         }
         else
         {
@@ -100,7 +100,7 @@ public abstract class Enemy<T> : EnemyBase where T : EnemyData
     }
     public virtual bool RaycastToPlayer(float distance)
     {
-        if (GameManager.Instance.IsGameStarting == false)
+        if (GameEvents.Instance.IsGameStarting == false)
             return false;
 
         RaycastHit2D raycastHit2D = RaycastToTarget(_playerMoving.TargetPoint, distance);
@@ -127,11 +127,11 @@ public abstract class Enemy<T> : EnemyBase where T : EnemyData
     public Transform[] GetMovingPoints() => _movingPoints;
     public void AngryMovingSpeedActivate()
     {
-        _movingSpeed = _enemyData.UsingVariationForStates ? RandomExtensions.RangeWithDeviation(_enemyData.AngryMovingSpeed, _enemyData.VariationForStates) : _enemyData.AngryMovingSpeed;
+        _movingSpeed = _enemyData.UsingVariationForStates ? _enemyData.AngryMovingSpeed.WithDeviation(_enemyData.VariationForStates) : _enemyData.AngryMovingSpeed;
     }
     public void NormalMovingSpeedActivate()
     {
-        _movingSpeed = _enemyData.UsingVariationForStates ? RandomExtensions.RangeWithDeviation(_enemyData.NormalMovingSpeed, _enemyData.VariationForStates) : _enemyData.NormalMovingSpeed;
+        _movingSpeed = _enemyData.UsingVariationForStates ? _enemyData.NormalMovingSpeed.WithDeviation(_enemyData.VariationForStates) : _enemyData.NormalMovingSpeed;
     }
     public void StopEnemyInIsIdleState()
     {

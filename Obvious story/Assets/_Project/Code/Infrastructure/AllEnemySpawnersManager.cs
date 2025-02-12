@@ -45,17 +45,9 @@ public class AllEnemySpawnersManager : MonoBehaviour
 
     private void AddListeners()
     {
-        GameManager.Instance.OnGameOpen.AddListener((() =>
-        {
-            OnInit?.Invoke();
-        }));
-        GameManager.Instance.OnPlay.AddListener((() =>
-        {
-            OnSpawn?.Invoke();
-        }));
-        GameManager.Instance.RestartSceneLoaoded.AddListener((() =>
-        {
-            OnSpawn?.Invoke();
-        }));
+        GameEvents.Instance.OnGameOpen.AddListener(() => OnInit?.Invoke());
+        GameEvents.Instance.OnPlay.AddListener(() => OnSpawn?.Invoke());
+        GameEvents.Instance.OnRestartLevelLoaoded.AddListener(() => OnSpawn?.Invoke());
+        SceneLoaoder.Instance.OnNextLevelLoaoded.AddListener(() => OnSpawn?.Invoke());
     }
 }

@@ -29,10 +29,8 @@ public class PlayerHealthManager : MonoBehaviour, IDamagable
     }
     public void TakeDamage(int damage)
     {
-        if (_heartsCount <= 0 || GameManager.Instance.IsGameStarting == false)
+        if (_heartsCount <= 0 || GameEvents.Instance.IsGameStarting == false)
             return;
-
-        SoundController.Instance.PlayPlayerSound(PlayerSound.PlayerSoundTypes.TakeDamage);
 
         _heartsCount = Mathf.Clamp(_heartsCount - damage, 0, _maxHeartsCount);
         DamageTaken?.Invoke(damage);

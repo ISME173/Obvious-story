@@ -13,7 +13,7 @@ public class SoundSettings : ScriptableObject
     [SerializeField] private bool _saveVolumeImmediatelyAfterChanges = true;
 
     [Header("Sounds"), Space]
-    [SerializeField] private List<PlayerSound> _playerSounds = new();
+    [SerializeField] private List<PlayerAudioClip> _playerSounds = new();
     [SerializeField] private List<SoundUI> _soundsUI = new();
     [SerializeField] private List<BackgroundMusic> _backgroundMusic = new();
 
@@ -27,7 +27,7 @@ public class SoundSettings : ScriptableObject
     public float SoundVolume => _soundSlider != null ? _soundSlider.value : 0f;
 
     public List<SoundUI> SoundsUI => _soundsUI;
-    public List<PlayerSound> PlayerSounds => _playerSounds;
+    public List<PlayerAudioClip> PlayerSounds => _playerSounds;
     public List<BackgroundMusic> BackgroundMusics => _backgroundMusic;
 
     private void OnSoundVolumeChangedInvoke(float value)

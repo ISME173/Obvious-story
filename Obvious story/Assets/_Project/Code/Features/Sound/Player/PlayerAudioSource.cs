@@ -1,12 +1,12 @@
 using UnityEngine;
-using static PlayerSound;
+using static PlayerAudioClip;
 
 [System.Serializable]
 public struct PlayerAudioSource
 {
     [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private PlayerSoundTypes _playerSoundType;
+    [SerializeField] private PlayerAudioClipTypes _playerSoundType;
 
     public AudioSource AudioSource => _audioSource;
-    public PlayerSoundTypes PlayerSoundType => _playerSoundType;
+    public PlayerAudioClipTypes PlayerAudioClipType => _playerSoundType;
 }

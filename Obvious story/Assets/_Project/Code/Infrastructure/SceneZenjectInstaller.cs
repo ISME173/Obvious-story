@@ -4,18 +4,17 @@ using Zenject;
 
 public class SceneZenjectInstaller : MonoInstaller
 {
-    [Header("Mobile input")]
+    [Header("Mobile input"), Space]
     [SerializeField] private Joystick _playerJoystick;
     [SerializeField] private Button _playerAttackButton;
     [SerializeField] private Button _pauseButton;
 
-    [Header("Desktop input")]
+    [Header("Desktop input"), Space]
     [SerializeField] private DesktopInput _desktopInput;
 
-    [Header("Other")]
+    [Header("Player components"), Space]
     [SerializeField] private PlayerMoving _playerMoving;
     [SerializeField] private PlayerHealthManager _playerHealthManager;
-    [SerializeField] private UIManager _uiManager;
 
     public override void InstallBindings()
     {
@@ -26,17 +25,13 @@ public class SceneZenjectInstaller : MonoInstaller
                 StatesInMobileInput();
                 break;
             case DeviceType.Desktop:
-                Container.BindInterfacesAndSelfTo<DesktopInput>().FromInstance(_desktopInput).NonLazy();
+                Container.BindInterfacesAndSelfTo<DesktopInput>().FromInstance(_desktopInput);
                 StatesInDecktopInput();
                 break;
         }
 
-        if (_uiManager == null)
-            _uiManager = FindAnyObjectByType<UIManager>();
-
         Container.Bind<PlayerMoving>().FromInstance(_playerMoving);
-        Container.Bind<PlayerHealthManager>().FromInstance(_playerHealthManager).NonLazy();
-        Container.Bind<UIManager>().FromInstance(_uiManager);
+        Container.Bind<PlayerHealthManager>().FromInstance(_playerHealthManager);
     }
     private void StatesInDecktopInput()
     {

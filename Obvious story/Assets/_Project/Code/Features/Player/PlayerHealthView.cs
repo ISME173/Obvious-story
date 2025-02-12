@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealthView : MonoBehaviour
 {
@@ -41,7 +42,7 @@ public class PlayerHealthView : MonoBehaviour
                 _heartUIList[i].gameObject.SetActive(false);
         }
 
-        GameManager.Instance.OnPlay.AddListener(DrawHearts);
+        GameEvents.Instance.OnPlay.AddListener(DrawHearts);
     }
 
     private void OnEnable()
@@ -49,7 +50,9 @@ public class PlayerHealthView : MonoBehaviour
         _playerHealthManager.DamageTaken += DrawHeartsBeforePlayerTakeDamage;
         _playerHealthManager.HealingHearts += DrawHeartsBeforeHealing;
 
-        GameManager.Instance.RestartSceneLoaoded.AddListener(DrawHearts);
+        SceneLoaoder.Instance.OnRestartLevelLoaded.AddListener(DrawHearts);
+        SceneLoaoder.Instance.OnNextLevelLoaoded.AddListener(DrawHearts);
+        GameEvents.Instance.OnPlay.AddListener(DrawHearts);
     }
     private void OnDisable()
     {

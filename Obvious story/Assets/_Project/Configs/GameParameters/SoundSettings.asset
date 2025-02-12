@@ -17,18 +17,18 @@ MonoBehaviour:
   _saveVolumeImmediatelyAfterChanges: 1
   _playerSounds:
   - _audioClip: {fileID: 8300000, guid: 5e4374b140d099247a3bf03684da9c65, type: 3}
-    _playerSoundType: 0
+    _playerAudioClipType: 0
   - _audioClip: {fileID: 8300000, guid: e4fbaeffb0bb11b44b7e9e82b1139cd3, type: 3}
-    _playerSoundType: 1
+    _playerAudioClipType: 1
   - _audioClip: {fileID: 8300000, guid: f972185cf731d90488fed93ada6c337a, type: 3}
-    _playerSoundType: 2
+    _playerAudioClipType: 2
   _soundsUI:
   - _audioClip: {fileID: 8300000, guid: eacb04f3816a0f445bbcfab0046425ca, type: 3}
     _uISoundTypes: 0
   _backgroundMusic:
   - _audioClip: {fileID: 8300000, guid: 3e8ceeeb9cf6db54da213626104e67af, type: 3}
-    _backgroundMusicTypes: 3
+    _backgroundMusicTypes: 0
   - _audioClip: {fileID: 8300000, guid: 1e308a5cf7abc0e499b2991cc0ef20a1, type: 3}
-    _backgroundMusicTypes: 4
+    _backgroundMusicTypes: 1
   - _audioClip: {fileID: 8300000, guid: 0b477bd9931d4414cbc04d98622599c5, type: 3}
-    _backgroundMusicTypes: 5
+    _backgroundMusicTypes: 2

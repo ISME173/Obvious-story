@@ -32,7 +32,7 @@ public class PlayerMoving : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.OnGameOver.AddListener((() =>
+        GameEvents.Instance.OnGameOver.AddListener((() =>
         {
             _canMoving = false;
 
@@ -47,7 +47,7 @@ public class PlayerMoving : MonoBehaviour
             _rigidbody2d.velocity = Vector2.zero;
             _speed = 0;
         }));
-        GameManager.Instance.OnGamePause.AddListener(() =>
+        GameEvents.Instance.OnGamePause.AddListener(() =>
         {
             _rigidbody2d.velocity = new Vector2(0, _rigidbody2d.velocity.y);
             TargetVelosity = _rigidbody2d.velocity;
@@ -65,7 +65,7 @@ public class PlayerMoving : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_canMoving == false || GameManager.Instance.IsGameStarting == false)
+        if (_canMoving == false || GameEvents.Instance.IsGameStarting == false)
             return;
 
         TargetVelosity = new Vector2(_userInput.GetPlayerMovingHorizontalInput(_speed), _rigidbody2d.velocity.y);
@@ -79,7 +79,7 @@ public class PlayerMoving : MonoBehaviour
     }
     private void Jump()
     {
-        if ((_canMoving && _playerIsGroundTrigger.IsGround) && GameManager.Instance.IsGameStarting)
+        if ((_canMoving && _playerIsGroundTrigger.IsGround) && GameEvents.Instance.IsGameStarting)
         {
             JumpActivate?.Invoke();
             _rigidbody2d.velocity = Vector2.up * _jumpForce;

@@ -20,7 +20,7 @@ public class PlayerAttack : MonoBehaviour
         if (_attackTypes.Length <= 0)
             throw new ArgumentNullException($"{nameof(_attackTypes)} array is empty");
 
-        GameManager.Instance.OnGameOver.AddListener((() =>
+        GameEvents.Instance.OnGameOver.AddListener((() =>
         {
             _userInput.OnPlayerAttackActivate -= AttackStart;
         }));
@@ -43,7 +43,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void AttackStart()
     {
-        if (_canAttack && GameManager.Instance.IsGameStarting)
+        if (_canAttack && GameEvents.Instance.IsGameStarting)
         {
             _canAttack = false;
 
@@ -57,7 +57,6 @@ public class PlayerAttack : MonoBehaviour
     }
     private IEnumerator CanAttackReload(float attackAnimationTime)
     {
-        SoundController.Instance.PlayPlayerSound(PlayerSound.PlayerSoundTypes.SwordSwim, true, true, UnityEngine.Random.Range(0.7f, 1.2f));
         yield return new WaitForSeconds(attackAnimationTime);
         _canAttack = true;
         PlayerAttackEnd?.Invoke();

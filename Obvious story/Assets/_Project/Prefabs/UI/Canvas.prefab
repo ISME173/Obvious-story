@@ -1721,7 +1721,7 @@ GameObject:
   - component: {fileID: 2132890122389651361}
   - component: {fileID: 4065978798234717211}
   - component: {fileID: 8982022990722032144}
-  - component: {fileID: 7804381717714292308}
+  - component: {fileID: 7521191398578940747}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1750,8 +1750,8 @@ RectTransform:
   - {fileID: 8944506761616345820}
   - {fileID: 6933732002344865830}
   - {fileID: 7657804826170385546}
-  - {fileID: 7395143832035871239}
   - {fileID: 4389690092037672420}
+  - {fileID: 7395143832035871239}
   - {fileID: 4194744668519892609}
   - {fileID: 3171827546533893221}
   m_Father: {fileID: 0}
@@ -1824,7 +1824,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &7804381717714292308
+--- !u!114 &7521191398578940747
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1833,18 +1833,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 3565013071809610818}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af815fa9b64c6594d9fca82837d6ddba, type: 3}
+  m_Script: {fileID: 11500000, guid: d90dae63e9678d845a756415afa800c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startPanel: {fileID: 7532222969128536847}
-  _restartPanel: {fileID: 7115990976888499292}
-  _loadingPanel: {fileID: 8452391821381220200}
-  _finishPanel: {fileID: 8448015606481290715}
-  _settingsPanel: {fileID: 4966288131185612789}
-  _pausePanel: {fileID: 6959755900348031381}
-  _victoryPanel: {fileID: 932986352840191232}
-  _timeToActivateRestartPanelBeforePlayerDied: 1.5
-  _pauseButton: {fileID: 5067292737018064813}
+  _uIPanels:
+    _startPanel: {fileID: 7532222969128536847}
+    _restartPanel: {fileID: 7115990976888499292}
+    _loadingPanel: {fileID: 8452391821381220200}
+    _finishPanel: {fileID: 8448015606481290715}
+    _settingsPanel: {fileID: 4966288131185612789}
+    _pausePanel: {fileID: 6959755900348031381}
+    _victoryPanel: {fileID: 932986352840191232}
+    _pauseButton: {fileID: 5067292737018064813}
   ButtonPlayClick:
     m_PersistentCalls:
       m_Calls: []
@@ -1860,10 +1860,13 @@ MonoBehaviour:
   ButtonContinueClick:
     m_PersistentCalls:
       m_Calls: []
-  MenuButtonClick:
+  ButtonMenuClick:
     m_PersistentCalls:
       m_Calls: []
   ButtonPauseClick:
+    m_PersistentCalls:
+      m_Calls: []
+  ButtonExitGameClick:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &3566809998355237332
@@ -2478,7 +2481,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3171827546533893221}
   - component: {fileID: 1183150772527566103}
-  - component: {fileID: 2575521382494140991}
+  - component: {fileID: 1008262234531714649}
   m_Layer: 5
   m_Name: BacgroundMusic
   m_TagString: Untagged
@@ -2601,7 +2604,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2575521382494140991
+--- !u!114 &1008262234531714649
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2610,16 +2613,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 4414506663688369624}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6eed85c0dedd49349834d79351196c62, type: 3}
+  m_Script: {fileID: 11500000, guid: 092a1fcedfa24bf4ea1e4897cc187937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _backgroundAudioSource:
   - _audioSource: {fileID: 1183150772527566103}
-    _backgroundMusicType: 3
+    _backgroundMusicType: 0
   - _audioSource: {fileID: 1183150772527566103}
-    _backgroundMusicType: 4
+    _backgroundMusicType: 1
   - _audioSource: {fileID: 1183150772527566103}
-    _backgroundMusicType: 5
+    _backgroundMusicType: 2
+  _backgroundMusicTypeInLevel: 0
 --- !u!1 &4451434544598720152
 GameObject:
   m_ObjectHideFlags: 0
@@ -4054,7 +4058,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4194744668519892609}
   - component: {fileID: 303876913852757619}
-  - component: {fileID: 8549802800890180595}
+  - component: {fileID: 142570602510010290}
   m_Layer: 5
   m_Name: UISound
   m_TagString: Untagged
@@ -4177,7 +4181,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &8549802800890180595
+--- !u!114 &142570602510010290
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4186,7 +4190,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6123942024480710302}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14f307b1c6026d14ca4af22126e8ac6a, type: 3}
+  m_Script: {fileID: 11500000, guid: fa13fc50a19ad114ca5323cfe2c183d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _uIAudioSources:
