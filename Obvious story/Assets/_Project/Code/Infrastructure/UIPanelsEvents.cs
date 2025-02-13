@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 using Zenject;
 
 public class UIPanelsEvents : MonoBehaviour
@@ -9,9 +8,25 @@ public class UIPanelsEvents : MonoBehaviour
     private static UIPanelsEvents _instance;
     [Inject] private IUserInput _userInput;
 
-    [HideInInspector]
-    public UnityEvent ButtonPlayClick, ButtonRestartClick, ButtonSettingsClick, ButtonExitSettingsClick, ButtonNextLevelClick, ButtonContinueClick,
-        ButtonMenuClick, ButtonPauseClick, ButtonExitGameClick, ButtonNoLoadNextLevelClick;
+    private IInvokableEvent ButtonPlayClick = new SecureUnityEvent(), ButtonRestartClick = new SecureUnityEvent(), ButtonSettingsClick = new SecureUnityEvent(),
+        ButtonExitSettingsClick = new SecureUnityEvent(), ButtonNextLevelClick = new SecureUnityEvent(), ButtonContinueClick = new SecureUnityEvent(),
+        ButtonMenuClick = new SecureUnityEvent(), ButtonPauseClick = new SecureUnityEvent(), ButtonExitGameClick = new SecureUnityEvent(),
+        ButtonNoLoadNextLevelClick = new SecureUnityEvent();
+
+    #region ReadOnlyEvents
+
+    public IReadOnlyEvent ButtonPlayClickReadOnly => ButtonPlayClick;
+    public IReadOnlyEvent ButtonRestartClickReadOnly => ButtonRestartClick;
+    public IReadOnlyEvent ButtonSettingsClickReadOnly => ButtonSettingsClick;
+    public IReadOnlyEvent ButtonExitSettingsClickReadOnly => ButtonExitSettingsClick;
+    public IReadOnlyEvent ButtonNextLevelClickReadOnly => ButtonNextLevelClick;
+    public IReadOnlyEvent ButtonContinueClickReadOnly => ButtonContinueClick;
+    public IReadOnlyEvent ButtonMenuClickReadOnly => ButtonMenuClick;
+    public IReadOnlyEvent ButtonPauseClickReadOnly => ButtonPauseClick;
+    public IReadOnlyEvent ButtonExitGameClickReadOnly => ButtonExitGameClick;
+    public IReadOnlyEvent ButtonNoLoadNextLevelClickReadOnly => ButtonNoLoadNextLevelClick;
+
+    #endregion
 
     public static UIPanelsEvents Instance
     {
@@ -122,22 +137,22 @@ public class UIPanelsEvents : MonoBehaviour
     }
     private void AddListenersToGameEvents()
     {
-        GameEvents.Instance.OnGameOpen.AddListener(() => { _uIPanels.StartPanel.Enable(); });
-        GameEvents.Instance.OnGameOver.AddListener(() => { _uIPanels.RestartPanel.Enable(); });
-        GameEvents.Instance.OnRestart.AddListener(() => { _uIPanels.LoadingPanel.Activate(); });
-        GameEvents.Instance.OnVictory.AddListener(() =>
+        GameEvents.Instance.OnGameOpenReadOnly.AddListener(() => { _uIPanels.StartPanel.Enable(); });
+        GameEvents.Instance.OnGameOverReadOnly.AddListener(() => { _uIPanels.RestartPanel.Enable(); });
+        GameEvents.Instance.OnRestartReadOnly.AddListener(() => { _uIPanels.LoadingPanel.Activate(); });
+        GameEvents.Instance.OnVictoryReadOnly.AddListener(() =>
         {
             _uIPanels.VictoryPanel.Enable();
             _uIPanels.FinishPanel.Disable();
         });
-        GameEvents.Instance.OnPlayerFinishEnter.AddListener(() => { _uIPanels.FinishPanel.Enable(); });
-        GameEvents.Instance.OnPlayerFinishExit.AddListener(() =>
+        GameEvents.Instance.OnPlayerFinishEnterReadOnly.AddListener(() => { _uIPanels.FinishPanel.Enable(); });
+        GameEvents.Instance.OnPlayerFinishExitReadOnly.AddListener(() =>
         {
             if (_uIPanels.FinishPanel.IsEnable)
                 _uIPanels.FinishPanel.Disable();
         });
 
-        SceneLoaoder.Instance.OnSceneLoad.AddListener((scene) => { _uIPanels.LoadingPanel.Activate(); });
-        SceneLoaoder.Instance.OnMenuSceneLoaded.AddListener(() => { _uIPanels.StartPanel.Enable(); });
+        SceneLoaoder.Instance.OnSceneLoadReadOnly.AddListener((scene) => { _uIPanels.LoadingPanel.Activate(); });
+        SceneLoaoder.Instance.OnMenuSceneLoadedReadOnly.AddListener(() => { _uIPanels.StartPanel.Enable(); });
     }
 }

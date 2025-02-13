@@ -49,28 +49,22 @@ public abstract class EnemySpawner<Data, EnemyType> : Spawner<EnemyType> where E
 
     private void Awake()
     {
-        AllEnemySpawnersManager.Instance.OnInit.AddListener((() =>
-        {
-            Init();
-        }));
+        AllEnemySpawnersManager.Instance.OnInit.AddListener(() => Init());
 
         if (_spawnOnPlay)
         {
-            AllEnemySpawnersManager.Instance.OnSpawn.AddListener((() =>
+            AllEnemySpawnersManager.Instance.OnSpawn.AddListener(() =>
             {
                 for (int i = 0; i < _enemySpawnStates.Count; i++)
                 {
                     for (int j = 0; j < _enemySpawnStates[i].SpawnCount; j++)
                         Spawn(_enemySpawnStates[i]);
                 }
-            }));
+            });
         }
     }
 
-    private void OnDisable()
-    {
-        Disable?.Invoke();
-    }
+    private void OnDisable() => Disable?.Invoke();
 
     protected virtual void Init()
     {

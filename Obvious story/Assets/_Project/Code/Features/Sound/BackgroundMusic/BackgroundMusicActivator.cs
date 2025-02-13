@@ -19,10 +19,10 @@ public class BackgroundMusicActivator : MonoBehaviour
     }
     private void AddListeners()
     {
-        GameEvents.Instance.OnGameOpen.AddListener(() => SoundController.Instance.PlayBackgroundMusic(_backgroundMusicTypeInLevel));
+        GameEvents.Instance.OnGameOpenReadOnly.AddListener(() => SoundController.Instance.PlayBackgroundMusic(_backgroundMusicTypeInLevel));
 
-        SceneLoaoder.Instance.OnNextLevelLoaoded.AddListener(() => SoundController.Instance.PlayBackgroundMusic(_backgroundMusicTypeInLevel));
-        SceneLoaoder.Instance.OnRestartLevelLoaded.AddListener(() => SoundController.Instance.PlayBackgroundMusic(_backgroundMusicTypeInLevel));
-        SceneLoaoder.Instance.OnMenuSceneLoaded.AddListener(() => SoundController.Instance.PlayBackgroundMusic(_backgroundMusicTypeInLevel));
+        SceneLoaoder.Instance.OnNextLevelLoaodedReadOnly.AddListener(() => SoundController.Instance.PlayBackgroundMusic(_backgroundMusicTypeInLevel));
+        SceneLoaoder.Instance.OnRestartLevelLoadedReadOnly.AddListener(() => SoundController.Instance.PlayBackgroundMusic(_backgroundMusicTypeInLevel));
+        SceneLoaoder.Instance.OnMenuSceneLoadedReadOnly.AddListener(() => SoundController.Instance.PlayBackgroundMusic(_backgroundMusicTypeInLevel));
     }
 }

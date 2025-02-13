@@ -18,15 +18,15 @@ public class UISoundController : MonoBehaviour
     }
     private void AddListeners()
     {
-        UIPanelsEvents.Instance.ButtonContinueClick.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
-        UIPanelsEvents.Instance.ButtonMenuClick.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
-        UIPanelsEvents.Instance.ButtonNextLevelClick.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
-        UIPanelsEvents.Instance.ButtonPlayClick.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
-        UIPanelsEvents.Instance.ButtonPauseClick.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
-        UIPanelsEvents.Instance.ButtonRestartClick.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
-        UIPanelsEvents.Instance.ButtonSettingsClick.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
-        UIPanelsEvents.Instance.ButtonExitGameClick.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
-        UIPanelsEvents.Instance.ButtonNoLoadNextLevelClick.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
-        UIPanelsEvents.Instance.ButtonExitSettingsClick.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
+        UIPanelsEvents.Instance.ButtonContinueClickReadOnly.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
+        UIPanelsEvents.Instance.ButtonMenuClickReadOnly.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
+        UIPanelsEvents.Instance.ButtonMenuClickReadOnly.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
+        UIPanelsEvents.Instance.ButtonPlayClickReadOnly.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
+        UIPanelsEvents.Instance.ButtonMenuClickReadOnly.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
+        UIPanelsEvents.Instance.ButtonRestartClickReadOnly.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
+        UIPanelsEvents.Instance.ButtonSettingsClickReadOnly.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
+        UIPanelsEvents.Instance.ButtonExitGameClickReadOnly.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
+        UIPanelsEvents.Instance.ButtonNoLoadNextLevelClickReadOnly.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
+        UIPanelsEvents.Instance.ButtonExitSettingsClickReadOnly.AddListener(() => SoundController.Instance.PlayUISound(SoundUI.UISoundTypes.ButtonClick));
     }
 }

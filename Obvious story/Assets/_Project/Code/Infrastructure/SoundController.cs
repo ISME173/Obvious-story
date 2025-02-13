@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Zenject;
 using static PlayerAudioClip;
 using static SoundUI;
 using static BackgroundMusic;

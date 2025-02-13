@@ -20,7 +20,7 @@ public class PlayerAttack : MonoBehaviour
         if (_attackTypes.Length <= 0)
             throw new ArgumentNullException($"{nameof(_attackTypes)} array is empty");
 
-        GameEvents.Instance.OnGameOver.AddListener((() =>
+        GameEvents.Instance.OnGameOverReadOnly.AddListener((() =>
         {
             _userInput.OnPlayerAttackActivate -= AttackStart;
         }));

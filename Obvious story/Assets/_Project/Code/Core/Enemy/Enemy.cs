@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization.Json;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator), typeof(Rigidbody2D), typeof(Collider2D))]
@@ -71,6 +72,22 @@ public abstract class Enemy<T> : EnemyBase where T : EnemyData
             _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
             AddAttackListenersToOnDamagebleCollideCheckWithEnemy();
+
+            GameEvents.Instance.OnGamePauseReadOnly.AddListener(() =>
+            {
+                _rigidbody2d.velocity = Vector2.zero;
+                gameObject.isStatic = true;
+                _animator.enabled = false;
+                _rigidbody2d.isKinematic = true;
+            });
+            UIPanelsEvents.Instance.ButtonContinueClickReadOnly.AddListener(() =>
+            {
+                gameObject.isStatic = false;
+                _animator.enabled = true;
+
+                if (this as FlyingEnemy<T> == false)
+                    _rigidbody2d.isKinematic = false;
+            });
         }
 
         Physics2D.IgnoreCollision(_collider, playerMoving.GetComponent<Collider2D>(), EnemyData.CanGoThroughAPlayerAndEnemy);

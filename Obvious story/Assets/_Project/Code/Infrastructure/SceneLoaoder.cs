@@ -1,7 +1,6 @@
 using NaughtyAttributes;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Zenject;
 
@@ -17,10 +16,22 @@ public class SceneLoaoder : MonoBehaviour
     private static SceneLoaoder _instance;
 
     [Inject] private GameSettings _gameSettings;
-    private bool _thisSceneIsMenu = true;
+    private bool _isFirstGameLoad = true;
+    private bool _isSceneLoading = false;
 
-    [HideInInspector] public UnityEvent<Scene> OnSceneLoad, OnSceneLoaoded;
-    [HideInInspector] public UnityEvent EndOfLevels, OnMenuSceneLoaded, OnRestartLevelLoaded, OnNextLevelLoaoded;
+    private IInvokableEvent<Scene> OnSceneLoad = new SecureUnityEvent<Scene>(), OnSceneLoaoded = new SecureUnityEvent<Scene>();
+    private IInvokableEvent EndOfLevels = new SecureUnityEvent(), OnMenuSceneLoaded = new SecureUnityEvent(),
+        OnRestartLevelLoaded = new SecureUnityEvent(), OnNextLevelLoaoded = new SecureUnityEvent();
+
+    #region ReadOnly events
+    public IReadOnlyEvent<Scene> OnSceneLoadReadOnly => OnSceneLoad;
+    public IReadOnlyEvent<Scene> OnSceneLoaodedReadOnly => OnSceneLoaoded;
+
+    public IReadOnlyEvent EndOfLevelsReadOnly => EndOfLevels;
+    public IReadOnlyEvent OnMenuSceneLoadedReadOnly => OnMenuSceneLoaded;
+    public IReadOnlyEvent OnRestartLevelLoadedReadOnly => OnRestartLevelLoaded;
+    public IReadOnlyEvent OnNextLevelLoaodedReadOnly => OnNextLevelLoaoded;
+    #endregion
 
     public static SceneLoaoder Instance
     {
@@ -45,31 +56,12 @@ public class SceneLoaoder : MonoBehaviour
     public int CurrentLevel { get; private set; } = 0;
     public bool IsLastLevel { get; private set; } = false;
     public bool IsFirstLevel { get; private set; } = true;
-    public bool ThisSceneIsMenu
-    {
-        get
-        {
-            if (GameEvents.Instance.IsGameStarting)
-                return false;
-
-            _thisSceneIsMenu = SceneManager.GetActiveScene().name == SceneManager.GetSceneByName(_gameSettings.LevelNames[0]).name;
-            return _thisSceneIsMenu;
-        }
-    }
 
     private float DelayBeforeTheSceneStartLoading
     {
         get
         {
-            if (_usingDelayBeforeStartLoadingLevel)
-            {
-                return Random.Range(_delayBeforeTheSceneStartLoading - _timeSpreadForLoadLevel, _delayBeforeTheSceneStartLoading
-                    + _timeSpreadForLoadLevel);
-            }
-            else
-            {
-                return 0;
-            }
+            return _usingDelayBeforeStartLoadingLevel ? _delayBeforeTheSceneStartLoading.WithDeviation(_timeSpreadForLoadLevel) : 0;
         }
     }
 
@@ -85,21 +77,37 @@ public class SceneLoaoder : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
 
-        GameEvents.Instance.OnRestart.AddListener(() => { LoadScene(_gameSettings.LevelNames[CurrentLevel], DelayBeforeTheSceneStartLoading, OnRestartLevelLoaded); });
-        GameEvents.Instance.OnNextLevel.AddListener(NextLevel);
-        GameEvents.Instance.OnMenuOpen.AddListener(() =>
+        GameEvents.Instance.OnRestartReadOnly.AddListener(Restart);
+        GameEvents.Instance.OnNextLevelReadOnly.AddListener(NextLevel);
+        GameEvents.Instance.OnMenuOpenReadOnly.AddListener(Menu);
+    }
+    private void Start()
+    {
+        if (_isFirstGameLoad)
         {
-            CurrentLevel = 0;
-            LoadScene(_gameSettings.LevelNames[CurrentLevel], DelayBeforeTheSceneStartLoading, OnMenuSceneLoaded);
-        });
+            OnSceneLoaoded?.Invoke(SceneManager.GetActiveScene());
+            _isFirstGameLoad = false;
+        }
     }
 
-    private void LoadScene(string sceneName, float delayToLoadScene, UnityEvent unityEventToInvokeBeforeLoaoding = null)
+    private void LoadScene(string sceneName, float delayToLoadScene, IInvokableEvent unityEventToInvokeBeforeLoaoding = null)
     {
+        if (_isSceneLoading == true)
+            return;
+
         OnSceneLoad?.Invoke(SceneManager.GetSceneByName(sceneName));
         StartCoroutine(LoadSceneStart(delayToLoadScene, sceneName, unityEventToInvokeBeforeLoaoding));
     }
 
+    private void Restart()
+    {
+        LoadScene(_gameSettings.LevelNames[CurrentLevel], DelayBeforeTheSceneStartLoading, OnRestartLevelLoaded);
+    }
+    private void Menu()
+    {
+        CurrentLevel = 0;
+        LoadScene(_gameSettings.LevelNames[CurrentLevel], DelayBeforeTheSceneStartLoading, OnMenuSceneLoaded);
+    }
     private void NextLevel()
     {
         CurrentLevel++;
@@ -114,8 +122,9 @@ public class SceneLoaoder : MonoBehaviour
         LoadScene(_gameSettings.LevelNames[CurrentLevel], DelayBeforeTheSceneStartLoading, OnNextLevelLoaoded);
     }
 
-    private IEnumerator LoadSceneStart(float delayToLoadScene, string sceneLoadName, UnityEvent unityEvent = null)
+    private IEnumerator LoadSceneStart(float delayToLoadScene, string sceneLoadName, IInvokableEvent unityEvent = null)
     {
+        _isSceneLoading = true;
         yield return new WaitForSeconds(delayToLoadScene);
 
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneLoadName);
@@ -130,6 +139,7 @@ public class SceneLoaoder : MonoBehaviour
         }
 
         OnSceneLoaoded?.Invoke(SceneManager.GetSceneByName(sceneLoadName));
+        _isSceneLoading = false;
 
         if (unityEvent != null)
             unityEvent?.Invoke();

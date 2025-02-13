@@ -1,17 +1,33 @@
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 using Zenject;
 
 public class GameEvents : MonoBehaviour
 {
-    [Inject, SerializeField] private PlayerHealthManager _playerHealthManager;
+    [Inject] private PlayerHealthManager _playerHealthManager;
 
     private static GameEvents _instance;
 
-    [HideInInspector]
-    public UnityEvent OnGameOpen, OnGameOver, OnVictory, OnPlay, OnRestart, OnExitGame, OnPlayerFinishEnter, OnPlayerFinishExit,
-        OnNextLevel, OnMenuOpen, OnGamePause, OnRestartLevelLoaoded;
+    private IInvokableEvent OnGameOpen = new SecureUnityEvent(), OnGameOver = new SecureUnityEvent(), OnVictory = new SecureUnityEvent(),
+        OnPlay = new SecureUnityEvent(), OnRestart = new SecureUnityEvent(), OnExitGame = new SecureUnityEvent(), OnPlayerFinishEnter = new SecureUnityEvent(),
+        OnPlayerFinishExit = new SecureUnityEvent(), OnNextLevel = new SecureUnityEvent(), OnMenuOpen = new SecureUnityEvent(),
+        OnGamePause = new SecureUnityEvent();
+
+    #region ReadOnlyEvents
+
+    public IReadOnlyEvent OnGameOpenReadOnly => OnGameOpen;
+    public IReadOnlyEvent OnGameOverReadOnly => OnGameOver;
+    public IReadOnlyEvent OnVictoryReadOnly => OnVictory;
+    public IReadOnlyEvent OnPlayReadOnly => OnPlay;
+    public IReadOnlyEvent OnRestartReadOnly => OnRestart;
+    public IReadOnlyEvent OnExitGameReadOnly => OnExitGame;
+    public IReadOnlyEvent OnPlayerFinishEnterReadOnly => OnPlayerFinishEnter;
+    public IReadOnlyEvent OnPlayerFinishExitReadOnly => OnPlayerFinishExit;
+    public IReadOnlyEvent OnNextLevelReadOnly => OnNextLevel;
+    public IReadOnlyEvent OnMenuOpenReadOnly => OnMenuOpen;
+    public IReadOnlyEvent OnGamePauseReadOnly => OnGamePause;
+
+    #endregion
 
     public static GameEvents Instance
     {
@@ -47,6 +63,19 @@ public class GameEvents : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
 
+        SceneLoaoder.Instance.OnSceneLoaodedReadOnly.AddListener((scene) =>
+        {
+            Init();
+            AddListeners();
+        });
+        SceneLoaoder.Instance.OnRestartLevelLoadedReadOnly.AddListener(() => IsGameStarting = true);
+        SceneLoaoder.Instance.OnMenuSceneLoadedReadOnly.AddListener(() => { IsGameStarting = false; });
+        SceneLoaoder.Instance.EndOfLevelsReadOnly.AddListener(Victory);
+    }
+    private void Start() => OnGameOpen?.Invoke();
+
+    private void Init()
+    {
         if (_playerHealthManager == null)
         {
             _playerHealthManager = FindAnyObjectByType<PlayerHealthManager>();
@@ -54,63 +83,28 @@ public class GameEvents : MonoBehaviour
             if (_playerHealthManager == null)
                 throw new ArgumentNullException(nameof(_playerHealthManager));
         }
-
-        AddListeners();
-
-        SceneLoaoder.Instance.OnSceneLoaoded.AddListener((scene) =>
-        {
-            if (_playerHealthManager == null)
-            {
-                _playerHealthManager = FindAnyObjectByType<PlayerHealthManager>();
-
-                if (_playerHealthManager == null)
-                    throw new ArgumentNullException(nameof(_playerHealthManager));
-            }
-
-            AddListeners();
-        });
-        SceneLoaoder.Instance.OnRestartLevelLoaded.AddListener(() =>
-        {
-            OnRestartLevelLoaoded?.Invoke();
-            IsGameStarting = true;
-        });
-        SceneLoaoder.Instance.OnMenuSceneLoaded.AddListener(() => { IsGameStarting = false; });
-        SceneLoaoder.Instance.EndOfLevels.AddListener(Victory);
-    }
-    private void Start()
-    {
-        OnGameOpen?.Invoke();
     }
     private void AddListeners()
     {
         _playerHealthManager.PlayerDied.AddListener(GameOver);
 
-        UIPanelsEvents.Instance.ButtonPlayClick.AddListener(Play);
-        UIPanelsEvents.Instance.ButtonRestartClick.AddListener(Restart);
-        UIPanelsEvents.Instance.ButtonExitGameClick.AddListener(ExitGame);
-        UIPanelsEvents.Instance.ButtonMenuClick.AddListener(Menu);
-        UIPanelsEvents.Instance.ButtonPauseClick.AddListener(Pause);
-        UIPanelsEvents.Instance.ButtonNextLevelClick.AddListener(NextLevel);
-        UIPanelsEvents.Instance.ButtonContinueClick.AddListener(() =>
-        {
-            IsGameStarting = true;
-        });
+        UIPanelsEvents.Instance.ButtonPlayClickReadOnly.AddListener(Play);
+        UIPanelsEvents.Instance.ButtonRestartClickReadOnly.AddListener(Restart);
+        UIPanelsEvents.Instance.ButtonExitGameClickReadOnly.AddListener(ExitGame);
+        UIPanelsEvents.Instance.ButtonMenuClickReadOnly.AddListener(Menu);
+        UIPanelsEvents.Instance.ButtonPauseClickReadOnly.AddListener(Pause);
+        UIPanelsEvents.Instance.ButtonNextLevelClickReadOnly.AddListener(NextLevel);
+        UIPanelsEvents.Instance.ButtonContinueClickReadOnly.AddListener(() => IsGameStarting = true);
 
         FinishInLevelTrigger finishInLevelTrigger = FindAnyObjectByType<FinishInLevelTrigger>();
         if (finishInLevelTrigger != null)
         {
-            finishInLevelTrigger.OnPlayerFinishTriggerEnter.AddListener(() =>
-            {
-                OnPlayerFinishEnter?.Invoke();
-            });
-            finishInLevelTrigger.OnPlayerFinishTriggerExit.AddListener(() =>
-            {
-                OnPlayerFinishExit?.Invoke();
-            });
+            finishInLevelTrigger.OnPlayerFinishTriggerEnter.AddListener(() => { OnPlayerFinishEnter?.Invoke(); });
+            finishInLevelTrigger.OnPlayerFinishTriggerExit.AddListener(() => { OnPlayerFinishExit?.Invoke(); });
         }
     }
 
-    #region EventsInvoke 
+    #region InvokeEvents
     private void Pause()
     {
         OnGamePause?.Invoke();

@@ -42,7 +42,7 @@ public class PlayerHealthView : MonoBehaviour
                 _heartUIList[i].gameObject.SetActive(false);
         }
 
-        GameEvents.Instance.OnPlay.AddListener(DrawHearts);
+        GameEvents.Instance.OnPlayReadOnly.AddListener(DrawHearts);
     }
 
     private void OnEnable()
@@ -50,9 +50,9 @@ public class PlayerHealthView : MonoBehaviour
         _playerHealthManager.DamageTaken += DrawHeartsBeforePlayerTakeDamage;
         _playerHealthManager.HealingHearts += DrawHeartsBeforeHealing;
 
-        SceneLoaoder.Instance.OnRestartLevelLoaded.AddListener(DrawHearts);
-        SceneLoaoder.Instance.OnNextLevelLoaoded.AddListener(DrawHearts);
-        GameEvents.Instance.OnPlay.AddListener(DrawHearts);
+        SceneLoaoder.Instance.OnRestartLevelLoadedReadOnly.AddListener(DrawHearts);
+        SceneLoaoder.Instance.OnNextLevelLoaodedReadOnly.AddListener(DrawHearts);
+        GameEvents.Instance.OnPlayReadOnly.AddListener(DrawHearts);
     }
     private void OnDisable()
     {

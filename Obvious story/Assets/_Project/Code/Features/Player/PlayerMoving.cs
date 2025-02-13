@@ -32,7 +32,7 @@ public class PlayerMoving : MonoBehaviour
 
     private void Start()
     {
-        GameEvents.Instance.OnGameOver.AddListener((() =>
+        GameEvents.Instance.OnGameOverReadOnly.AddListener((() =>
         {
             _canMoving = false;
 
@@ -47,21 +47,26 @@ public class PlayerMoving : MonoBehaviour
             _rigidbody2d.velocity = Vector2.zero;
             _speed = 0;
         }));
-        GameEvents.Instance.OnGamePause.AddListener(() =>
+        GameEvents.Instance.OnGameOpenReadOnly.AddListener(() =>
         {
             _rigidbody2d.velocity = new Vector2(0, _rigidbody2d.velocity.y);
             TargetVelosity = _rigidbody2d.velocity;
         });
+        GameEvents.Instance.OnGamePauseReadOnly.AddListener(() =>
+        {
+            _rigidbody2d.velocity = Vector2.zero;
+            gameObject.isStatic = true;
+            _rigidbody2d.isKinematic = true;
+        });
+        UIPanelsEvents.Instance.ButtonContinueClickReadOnly.AddListener(() =>
+        {
+            gameObject.isStatic = false;
+            _rigidbody2d.isKinematic = false;
+        });
     }
 
-    private void OnEnable()
-    {
-        _userInput.OnPlayerJumpButtonDown += Jump;
-    }
-    private void OnDisable()
-    {
-        _userInput.OnPlayerJumpButtonDown -= Jump;
-    }
+    private void OnEnable() => _userInput.OnPlayerJumpButtonDown += Jump;
+    private void OnDisable() => _userInput.OnPlayerJumpButtonDown -= Jump;
 
     private void FixedUpdate()
     {
