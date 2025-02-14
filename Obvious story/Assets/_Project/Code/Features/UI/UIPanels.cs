@@ -14,10 +14,6 @@ public struct UIPanels
     [SerializeField] private PausePanel _pausePanel;
     [SerializeField] private VictoryPanel _victoryPanel;
 
-    [Header("Any buttons"), Space]
-    [SerializeField] private Button _pauseButton;
-
-    public Button PauseButton => _pauseButton;
     public Slider SoundSlider => _settingsPanel.SoundSlider;
     public Slider MusicSlider => _settingsPanel.MusicSlider;
 

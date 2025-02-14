@@ -30,14 +30,9 @@ public class MobileInput : IUserInput
 
     public event Action OnPlayerJumpButtonDown, OnPlayerAttackActivate, OnPauseActivate;
 
-    public float GetPlayerMovingHorizontalInput(float speed)
-    {
-        return _joystick.Horizontal * speed;
-    }
-    public IUserInput.DeviceType GetDeviceType()
-    {
-        return IUserInput.DeviceType.Handler;
-    }
+    public float GetPlayerMovingHorizontalInput(float speed) => _joystick.Horizontal * speed;
+    public IUserInput.DeviceType GetDeviceType() => IUserInput.DeviceType.Handler;
+
     public void UISetActiveFalse()
     {
         _joystick.gameObject.SetActive(false);

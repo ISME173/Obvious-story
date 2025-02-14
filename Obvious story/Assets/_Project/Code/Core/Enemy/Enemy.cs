@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization.Json;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator), typeof(Rigidbody2D), typeof(Collider2D))]
@@ -42,25 +41,12 @@ public abstract class Enemy<T> : EnemyBase where T : EnemyData
         }
     }
 
-    private void OnDisable()
-    {
-        _collider.enabled = true;
-        Disabled?.Invoke(this);
-    }
-    private void OnDestroy()
-    {
-        Destroyed?.Invoke(this);
-    }
+    private void OnDisable() => Disabled?.Invoke(this);
+    private void OnDestroy() => Destroyed?.Invoke(this);
 
-    protected virtual void Attack(IDamagable damagable)
-    {
-        damagable.TakeDamage(_enemyData.AttackDamage);
-    }
+    protected virtual void Attack(IDamagable damagable) => damagable.TakeDamage(_enemyData.AttackDamage);
     protected abstract void AddAttackListenersToOnDamagebleCollideCheckWithEnemy();
-    protected virtual void Died()
-    {
-        OnDied?.Invoke(this);
-    }
+    protected virtual void Died() => OnDied?.Invoke(this);
 
     public virtual void Init(PlayerMoving playerMoving, Transform[] movingPoints, bool isInstantiate)
     {
@@ -128,10 +114,8 @@ public abstract class Enemy<T> : EnemyBase where T : EnemyData
         if (_isLive == false)
             return;
 
-        _heartsCount -= damage;
+        _heartsCount -= Math.Abs(damage);
         _animator.SetTrigger(_enemyData.TakeDamageTrigger);
-
-        //Debug.Log($"{gameObject.name} take damage. Hearts count: {_heartsCount}");
 
         if (_heartsCount <= 0)
         {

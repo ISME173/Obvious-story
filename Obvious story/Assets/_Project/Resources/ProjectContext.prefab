@@ -76,4 +76,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameSettings: {fileID: 11400000, guid: 64bcd9845db51fb46a85c5e02477ac49, type: 2}
   _soundSettings: {fileID: 11400000, guid: a9fd4ab35aa9f824699de35a936b0a44, type: 2}
-  _soundController: {fileID: 0}

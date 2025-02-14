@@ -1,6 +1,5 @@
 using UnityEngine;
 using System;
-using Zenject;
 
 public class BackgroundMusicActivator : MonoBehaviour
 {

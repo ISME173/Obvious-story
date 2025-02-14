@@ -22,27 +22,13 @@ public class SceneZenjectInstaller : MonoInstaller
         {
             case DeviceType.Handheld:
                 Container.BindInterfacesAndSelfTo<MobileInput>().FromInstance(new MobileInput(_playerJoystick, _playerAttackButton, _pauseButton));
-                StatesInMobileInput();
                 break;
             case DeviceType.Desktop:
                 Container.BindInterfacesAndSelfTo<DesktopInput>().FromInstance(_desktopInput);
-                StatesInDecktopInput();
                 break;
         }
 
-        Container.Bind<PlayerMoving>().FromInstance(_playerMoving).NonLazy();
+        Container.Bind<PlayerMoving>().FromInstance(_playerMoving);
         Container.Bind<PlayerHealthManager>().FromInstance(_playerHealthManager);
-    }
-    private void StatesInDecktopInput()
-    {
-        _playerJoystick.gameObject.SetActive(false);
-        _playerAttackButton.gameObject.SetActive(false);
-        _pauseButton.gameObject.SetActive(false);
-    }
-    private void StatesInMobileInput()
-    {
-        _playerJoystick.gameObject.SetActive(true);
-        _playerAttackButton.gameObject.SetActive(true);
-        _pauseButton.gameObject.SetActive(true);
     }
 }

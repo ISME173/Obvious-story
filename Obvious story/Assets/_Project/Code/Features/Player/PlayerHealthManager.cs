@@ -32,9 +32,8 @@ public class PlayerHealthManager : MonoBehaviour, IDamagable
         if (_heartsCount <= 0 || GameEvents.Instance.IsGameStarting == false)
             return;
 
-        _heartsCount = Mathf.Clamp(_heartsCount - damage, 0, _maxHeartsCount);
+        _heartsCount = Mathf.Clamp(_heartsCount - Math.Abs(damage), 0, _maxHeartsCount);
         DamageTaken?.Invoke(damage);
-        //Debug.Log($"Player take damage! Hearts count: {HeartsCount}");
 
         if (_heartsCount <= 0)
             Died();

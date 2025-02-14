@@ -132,6 +132,7 @@ public class GameEvents : MonoBehaviour
     private void ExitGame()
     {
         OnExitGame?.Invoke();
+        Application.Quit();
     }
     private void Victory()
     {

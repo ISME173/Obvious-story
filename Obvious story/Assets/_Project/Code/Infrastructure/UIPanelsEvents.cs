@@ -7,6 +7,7 @@ public class UIPanelsEvents : MonoBehaviour
 
     private static UIPanelsEvents _instance;
     [Inject] private IUserInput _userInput;
+    private MobileInput _mobileInput;
 
     private IInvokableEvent ButtonPlayClick = new SecureUnityEvent(), ButtonRestartClick = new SecureUnityEvent(), ButtonSettingsClick = new SecureUnityEvent(),
         ButtonExitSettingsClick = new SecureUnityEvent(), ButtonNextLevelClick = new SecureUnityEvent(), ButtonContinueClick = new SecureUnityEvent(),
@@ -59,6 +60,9 @@ public class UIPanelsEvents : MonoBehaviour
             _instance = this;
         }
 
+        if (_userInput as MobileInput != null)
+            _mobileInput = (MobileInput)_userInput;
+
         AddListenersToPanels();
         AddListenersToGameEvents();
     }
@@ -71,6 +75,9 @@ public class UIPanelsEvents : MonoBehaviour
 
             _uIPanels.PauseActivate();
             ButtonPauseClick?.Invoke();
+
+            if (_mobileInput != null)
+                _mobileInput.UISetActiveFalse();
         };
 
         _uIPanels.StartPanel.StartGame.onClick.AddListener(() =>
@@ -105,14 +112,6 @@ public class UIPanelsEvents : MonoBehaviour
 
         _uIPanels.VictoryPanel.MenuButton.onClick.AddListener(() => { ButtonMenuClick?.Invoke(); });
 
-        _uIPanels.PauseButton.onClick.AddListener(() =>
-        {
-            if (GameEvents.Instance.IsGameStarting == false)
-                return;
-
-            _uIPanels.PauseActivate();
-            ButtonPauseClick?.Invoke();
-        });
         _uIPanels.PausePanel.MenuButton.onClick.AddListener(() => { ButtonMenuClick?.Invoke(); });
         _uIPanels.PausePanel.SettingsButton.onClick.AddListener(() =>
         {
@@ -126,6 +125,9 @@ public class UIPanelsEvents : MonoBehaviour
 
             ButtonContinueClick?.Invoke();
             _uIPanels.PausePanel.Disable();
+
+            if (_mobileInput != null)
+                _mobileInput.UISetActiveTrue();
         });
 
         _uIPanels.FinishPanel.NextLevelButton.onClick.AddListener(() => { ButtonNextLevelClick?.Invoke(); });
@@ -137,6 +139,11 @@ public class UIPanelsEvents : MonoBehaviour
     }
     private void AddListenersToGameEvents()
     {
+        GameEvents.Instance.OnPlayReadOnly.AddListener(() =>
+        {
+            if (_mobileInput != null)
+                _mobileInput.UISetActiveTrue();
+        });
         GameEvents.Instance.OnGameOpenReadOnly.AddListener(() => { _uIPanels.StartPanel.Enable(); });
         GameEvents.Instance.OnGameOverReadOnly.AddListener(() => { _uIPanels.RestartPanel.Enable(); });
         GameEvents.Instance.OnRestartReadOnly.AddListener(() => { _uIPanels.LoadingPanel.Activate(); });
