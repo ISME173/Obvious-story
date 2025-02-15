@@ -11,7 +11,7 @@
 ![capture_20250215193734899](https://github.com/user-attachments/assets/e47ce6d4-cdea-4404-b2bc-69a869576f57)
 
 ## ⚙️ Установка и запуск
-1. **Клонируйте репозиторий**:
+1. **Клонируйте репозиторий (или просто скачайте проект)**:
    ```bash
    git clone https://github.com/ISME173/Obvious-story.git
 2. **Откройте проект в Unity (Версия - 2022.3.20f1)**
