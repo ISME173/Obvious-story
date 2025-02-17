@@ -47,7 +47,7 @@
 ### Android версия на DropBox: [тык](https://www.dropbox.com/scl/fi/h2tm53nq9967weu4khb3j/ObviousStory-v0.0.0.7.apk?rlkey=8dxydhrn0ujwdig1iuii8rv5t&st=25z6ipps&dl=0)
 
 **Инструкция:**
-1. Перейдите по ссылку
+1. Перейдите по ссылке
 2. Нажмите скачать
 3. После скачивания установите файл с игрой
 4. Запускайте и наслаждайтесь игрой! :)
